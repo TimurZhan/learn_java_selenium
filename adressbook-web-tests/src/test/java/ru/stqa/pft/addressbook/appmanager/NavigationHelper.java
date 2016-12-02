@@ -6,17 +6,14 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 /**
  * Создан вспомогательный класс. Т.н. помошник по переключению между разделами тестируемого приложения.
  */
-public class NavigationHelper {
-
-
-  private FirefoxDriver wd;
+public class NavigationHelper extends HelperBase {
 
   public NavigationHelper(FirefoxDriver wd) {
-    this.wd = wd;
+    super(wd);//Ссылка на драйвер Firefox наследуется из HelperBase
   }
 
   //Создан отдельный вспомогательный метод для шага перехода в раздел "Группы".
   public void gotoGroupPage() {
-      wd.findElement(By.linkText("groups")).click();
+    click(By.linkText("groups"));
   }
 }

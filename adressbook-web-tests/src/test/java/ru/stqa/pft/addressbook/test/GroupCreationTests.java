@@ -13,7 +13,7 @@ public class GroupCreationTests extends TestBase { //Создан базовый
         app.getGroupHelper().fillGroupForm(new GroupData("Test1", "drgdgdg", "dgfdgdgdgd")); //Данный метод сделан универсальным
         app.getGroupHelper().submitGroupCreation();
         app.getGroupHelper().returnToGroupPage();
-        app.logoutProgram();
+        app.getSessionHelper().logoutProgram();
     }
 
 }
