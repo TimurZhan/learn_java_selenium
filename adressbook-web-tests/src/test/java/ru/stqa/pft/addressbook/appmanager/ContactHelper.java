@@ -1,8 +1,11 @@
 package ru.stqa.pft.addressbook.appmanager;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.Select;
+import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
 
 public class ContactHelper extends HelperBase  {
@@ -15,7 +18,7 @@ public class ContactHelper extends HelperBase  {
     click(By.xpath("//div[@id='content']/form/input[21]"));
   }
 
-  public void fillContactForm(ContactData contactData) {
+  public void fillContactForm(ContactData contactData, boolean creation) { // boolean creation - это параметр, определяющий создается контакт или только модифиципуется.
     type(By.name("firstname"), contactData.getFirstname());
     type(By.name("middlename"), contactData.getMiddlename());
     type(By.name("lastname"), contactData.getLastname());
@@ -24,6 +27,13 @@ public class ContactHelper extends HelperBase  {
     type(By.name("mobile"), contactData.getMobilePhoneNumber());
     type(By.name("email"), contactData.getEmail());
     type(By.name("address2"), contactData.getAddress2());
+
+    if (creation) { //Если это форма создания контакта, то элемент выбора групп должен быть
+      new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup()); //
+    } else {//Если это форма модификации контакта, то элемент выбора групп тут НЕ должен быть
+      Assert.assertFalse(isElementPresent(By.name("new_group")));
+    }
+
   }
 
   public void initContact() {
