@@ -9,7 +9,7 @@ public class ContactData {
   private final String mobilePhoneNumber;
   private final String email;
   private final String address2;
-  private String group;
+  private static String group;
 
   public ContactData(String firstname, String middlename, String lastname, String companyName,
                      String address1, String mobilePhoneNumber, String email, String address2, String group) {
@@ -56,7 +56,7 @@ public class ContactData {
     return address2;
   }
 
-  public String getGroup() {
+  public static String getGroup() {
     return group;
   }
 }

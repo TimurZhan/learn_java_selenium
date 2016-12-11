@@ -15,7 +15,7 @@ public class ContactHelper extends HelperBase  {
   }
 
   public void submitContact() {
-    click(By.xpath("//div[@id='content']/form/input[21]"));
+    click(By.xpath("//*[@id='content']/*/input[@value='Enter']"));
   }
 
   public void fillContactForm(ContactData contactData, boolean creation) { // boolean creation - это параметр, определяющий создается контакт или только модифиципуется.
@@ -29,7 +29,7 @@ public class ContactHelper extends HelperBase  {
     type(By.name("address2"), contactData.getAddress2());
 
     if (creation) { //Если это форма создания контакта, то элемент выбора групп должен быть
-      new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup()); //
+      new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(ContactData.getGroup()); //
     } else {//Если это форма модификации контакта, то элемент выбора групп тут НЕ должен быть
       Assert.assertFalse(isElementPresent(By.name("new_group")));
     }
@@ -41,7 +41,7 @@ public class ContactHelper extends HelperBase  {
   }
 
   public void initContactModification() {
-    click(By.xpath("//table[@id='maintable']/tbody/tr[3]/td[8]/a/img"));
+    click(By.xpath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img"));
   }
 
   public void submitContactModification() {
@@ -54,6 +54,16 @@ public class ContactHelper extends HelperBase  {
   }
 
   public void selectToDeleteContact() {
-    click(By.xpath("//div/div[4]/form[2]/table/tbody/tr[3]/td[1]/input"));
+    click(By.xpath("//div/div[4]/form[2]/table/tbody/tr[2]/td[1]/input[@name='selected[]']"));
+  }
+
+  public void createContact(ContactData contact, boolean creation) {
+    initContact();
+    fillContactForm(contact, true); //true означает, что поле для выбора групп, тут должно быть
+    submitContact();
+  }
+
+  public boolean isThereAContact() {
+    return isElementPresent(By.xpath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img"));
   }
 }
