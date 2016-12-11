@@ -9,10 +9,7 @@ public class GroupCreationTests extends TestBase { //Создан базовый
     public void testGroupCreation() {
         //Тут каждый шаг теста выделен в отдельный вспомогательный метод
         app.getNavigationHelper().gotoGroupPage();
-        app.getGroupHelper().initGroupCreation();
-        app.getGroupHelper().fillGroupForm(new GroupData("Test1", "drgdgdg", "dgfdgdgdgd")); //Данный метод сделан универсальным
-        app.getGroupHelper().submitGroupCreation();
-        app.getGroupHelper().returnToGroupPage();
+        app.getGroupHelper().createGroup(new GroupData("Test1", "drgdgdg", "dgfdgdgdgd"));
         app.getSessionHelper().logoutProgram();
     }
 

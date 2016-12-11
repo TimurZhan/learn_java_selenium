@@ -52,4 +52,15 @@ public class GroupHelper extends HelperBase {
     click(By.name("update"));
   }
 
+  public void createGroup(GroupData group) {
+    initGroupCreation();
+    fillGroupForm(group); //Данный метод сделан универсальным
+    submitGroupCreation();
+    returnToGroupPage();
+  }
+
+  //Создан отдельный метод для проверки наличия уже созданной группы
+  public boolean isThereAGroup() {
+    return isElementPresent(By.name("selected[]"));
+  }
 }
