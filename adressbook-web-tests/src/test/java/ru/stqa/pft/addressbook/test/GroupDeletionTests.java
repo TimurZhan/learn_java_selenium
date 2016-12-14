@@ -13,7 +13,7 @@ public class GroupDeletionTests extends TestBase {
     if (! app.getGroupHelper().isThereAGroup()){//Создана проверка предусловия того, что удаляемая группа существует.
       app.getGroupHelper().createGroup(new GroupData("Test1", "drgdgdg", "dgfdgdgdgd"));
     }
-    app.getGroupHelper().selectGroup();
+    app.getGroupHelper().selectGroup(before - 1);//В параметре указывается индекс элемента. "before - 1", это последний элемент в списке
     app.getGroupHelper().deleteSelectedGroups();
     app.getGroupHelper().returnToGroupPage();
     int after = app.getGroupHelper().getGroupCount();//Тут происходит подсчет количества групп ПОСЛЕ создания группы.\

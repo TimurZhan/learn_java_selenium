@@ -13,7 +13,7 @@ public class GroupModificationTests extends TestBase {
     if (! app.getGroupHelper().isThereAGroup()){ //Создана проверка предусловия того, что редактируемая группа существует.
       app.getGroupHelper().createGroup(new GroupData("Test1", "drgdgdg", "dgfdgdgdgd"));
     }
-    app.getGroupHelper().selectGroup();
+    app.getGroupHelper().selectGroup(before - 1);//В параметре указывается индекс элемента. "before - 1", это последний элемент в списке
     app.getGroupHelper().initGroupModification();
     app.getGroupHelper().fillGroupForm(new GroupData("Test1", "Test2", "dBd36b"));
     app.getGroupHelper().submitGroupModification();
