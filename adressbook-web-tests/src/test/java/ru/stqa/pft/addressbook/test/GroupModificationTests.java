@@ -21,7 +21,7 @@ public class GroupModificationTests extends TestBase {
     app.getGroupHelper().submitGroupModification();
     app.getGroupHelper().returnToGroupPage();
     List<GroupData> after = app.getGroupHelper().getGroupList();//Тут происходит подсчет количества групп (элементов в списке) ПОСЛЕ создания группы.
-    Assert.assertEquals(after.size(), before.size());//Тут реализована проверка количества групп
+    Assert.assertEquals(after.size(), before.size());//Тут реализована проверка количества групп (размер списка групп)
     app.getSessionHelper().logoutProgram();
   }
 }

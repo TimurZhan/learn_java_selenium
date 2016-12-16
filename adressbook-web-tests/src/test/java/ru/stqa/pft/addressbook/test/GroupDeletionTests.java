@@ -19,7 +19,9 @@ public class GroupDeletionTests extends TestBase {
     app.getGroupHelper().deleteSelectedGroups();
     app.getGroupHelper().returnToGroupPage();
     List<GroupData> after = app.getGroupHelper().getGroupList();//Тут происходит подсчет количества групп (элементов в списке) ПОСЛЕ создания группы.
-    Assert.assertEquals(after.size(), before.size() - 1);//Тут реализована проверка количества элементов (групп), до и после. Необходимо, чтобы значение before было меньше значения after.
+    Assert.assertEquals(after.size(), before.size() - 1);//Тут реализована проверка количества элементов (размер списка групп), до и после. Необходимо, чтобы значение before было меньше значения after.
+    before.remove(before.size() - 1);//Удаляем не нужный элемент, для того чтобы привести старый список в соответствии с обновленным. Данное действие необходимо для проверки, что оставшиейся элементы остались же ими.
+    Assert.assertEquals(before, after);//Тут происходит проверка элементов (группы, как объекты) старого и нового списков. Нужно чтобы данные в них полностью совпали друг с другом.
     app.getSessionHelper().logoutProgram();
   }
 

@@ -15,7 +15,7 @@ public class GroupCreationTests extends TestBase { //Создан базовый
         List<GroupData> before = app.getGroupHelper().getGroupList();//Тут происходит подсчет количества групп(элементов в списке) ДО создания группы.
         app.getGroupHelper().createGroup(new GroupData("Test1", "drgdgdg", "dgfdgdgdgd"));
         List<GroupData> after = app.getGroupHelper().getGroupList();//Тут происходит подсчет количества групп (элементов в списке) ПОСЛЕ создания группы.
-        Assert.assertEquals(after.size(), before.size() + 1);//Тут реализована проверка количества элементов (групп), до и после. Необходимо, чтобы значения совпадали.
+        Assert.assertEquals(after.size(), before.size() + 1);//Тут реализована проверка количества элементов (размер списка групп), до и после. Необходимо, чтобы значения совпадали.
         app.getSessionHelper().logoutProgram();
     }
 
