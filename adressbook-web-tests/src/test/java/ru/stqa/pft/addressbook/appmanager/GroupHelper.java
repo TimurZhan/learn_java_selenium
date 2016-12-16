@@ -2,8 +2,12 @@ package ru.stqa.pft.addressbook.appmanager;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import ru.stqa.pft.addressbook.model.GroupData;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Создан вспомогательный класс. Т.н. помошник по работе с руппами.
@@ -67,5 +71,17 @@ public class GroupHelper extends HelperBase {
   //Создан отдельный метод подсчитывающий количество групп
   public int getGroupCount() {
     return wd.findElements(By.name("selected[]")).size();
+  }
+
+  //Создан отдельный метод подсчитывающий количество групп как объектов в списке
+  public List<GroupData> getGroupList() {
+    List<GroupData> groups = new ArrayList<GroupData>();
+    List<WebElement> elements = wd.findElements(By.cssSelector("span.group"));//Получаем список объектов типа element по тегу span, у которого параметр класс group.
+    for (WebElement element : elements){//Инициализируем цикл по перебору массива полученных элементов.
+      String name = element.getText();//Получаем с каждого элемента его текст, который идет в переменную name
+      GroupData group = new GroupData(name, null, null);// Создаем объект типа GroupData с именем group, который будет использоваться для добавления в список
+      groups.add(group);// Добавляем созданный объект в спискок
+    }
+    return groups;
   }
 }
