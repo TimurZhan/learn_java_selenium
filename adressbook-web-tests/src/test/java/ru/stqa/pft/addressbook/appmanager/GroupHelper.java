@@ -79,7 +79,9 @@ public class GroupHelper extends HelperBase {
     List<WebElement> elements = wd.findElements(By.cssSelector("span.group"));//Получаем список объектов типа element по тегу span, у которого параметр класс group.
     for (WebElement element : elements){//Инициализируем цикл по перебору массива полученных элементов.
       String name = element.getText();//Получаем с каждого элемента его текст, который идет в переменную name
-      String id = element.findElement(By.tagName("input")).getAttribute("value");//Получаем элемент input, у которого получаем аттрибут value, и сохраняем это все в переменную id
+
+      //Получаем элемент input, у которого получаем аттрибут value, и сохраняем это все в переменную id. Метод Integer.parseInt преобразует строку в число.
+      int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
       GroupData group = new GroupData(id, name, null, null);// Создаем объект типа GroupData с именем group, который будет использоваться для добавления в список
       groups.add(group);// Добавляем созданный объект в спискок
     }
