@@ -4,6 +4,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.GroupData;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 
@@ -23,10 +24,18 @@ public class GroupModificationTests extends TestBase {
     app.getGroupHelper().submitGroupModification();
     app.getGroupHelper().returnToGroupPage();
     List<GroupData> after = app.getGroupHelper().getGroupList();//Тут происходит подсчет количества групп (элементов в списке) ПОСЛЕ создания группы.
-    Assert.assertEquals(after.size(), before.size());//Тут реализована проверка количества групп (размер списка групп)\
+    Assert.assertEquals(after.size(), before.size());//Тут реализована проверка количества групп (размер списка групп)
     before.remove(before.size() - 1);//Удаляем модифицированную группу из списка before. Нужно для дальнейшего сравнения.
     before.add(group);//Добавляем получившуюся, после модификации, группу в спискок before. Нужно для дальнейшего сравнения.
-    Assert.assertEquals(new HashSet<Object>(before),new HashSet<Object>(after));//Тут преобразовываем списки в неупорадоченные коллекции(множестав) и сравниваем их.
+
+    /**
+     * Тут задействовано лямбда-выражение(анонимная функция), которая помещена в переменную " Comparator<? super GroupData> byId".
+     * В данной функции, на вход принимаются 2 объекта, типа GroupData (g1, g2). Затем, при помощи "Integer.compare" они сравниваются, путем сравнения их ID.
+     */
+    Comparator<? super GroupData> byId = (g1, g2) -> Integer.compare(g1.getId(), g2.getId());
+    before.sort(byId);//Сортируем списко "ДО" по ID объектов, находящихся в нем.
+    after.sort(byId);//Сортируем списко "ПОСЛЕ" по ID объектов, находящихся в нем.
+    Assert.assertEquals(before, after);//Cравниваем списки после их упорядочивания.
     app.getSessionHelper().logoutProgram();
   }
 }
