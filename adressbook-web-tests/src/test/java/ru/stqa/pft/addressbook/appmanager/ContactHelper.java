@@ -45,7 +45,7 @@ public class ContactHelper extends HelperBase  {
   }
 
   public void initContactModification(int index) {
-    wd.findElements(By.xpath("//table[@id='maintable']/tbody//a/img")).get(index).click();
+    wd.findElements(By.cssSelector("img[title='Edit']")).get(index).click();
   }
 
   public void submitContactModification() {

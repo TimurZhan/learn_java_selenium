@@ -18,9 +18,9 @@ public class ContactModificationTests extends TestBase {
     }
     app.getNavigationHelper().returnToHomePage();
     List<ContactData> before = app.getContactHelper().getContactList();
-    app.getContactHelper().initContactModification(1);
+    app.getContactHelper().initContactModification(before.size() - 1);
     ContactData contact = new ContactData(
-            before.get(1).getId(),
+            before.get(before.size() - 1).getId(),
             "8",
             "8",
             "Test3",
@@ -35,7 +35,7 @@ public class ContactModificationTests extends TestBase {
     app.getNavigationHelper().returnToHomePage();
     List<ContactData> after = app.getContactHelper().getContactList();
     Assert.assertEquals(after.size(), before.size());//Тут реализована проверка количества контактов (размер списка контактов)
-    before.remove(1);//Удаляем модифицированный контакт из списка before. Нужно для дальнейшего сравнения.
+    before.remove(before.size() - 1);//Удаляем модифицированный контакт из списка before. Нужно для дальнейшего сравнения.
     before.add(contact);//Добавляем получившийся, после модификации, контакт в спискок before. Нужно для дальнейшего сравнения.
 
     /**
