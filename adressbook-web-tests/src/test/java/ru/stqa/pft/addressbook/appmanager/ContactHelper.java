@@ -79,13 +79,14 @@ public class ContactHelper extends HelperBase  {
   //Создан отдельный метод подсчитывающий количество контактов, как объектов в списке
   public List<ContactData> getContactList() {
     List<ContactData> contacts = new ArrayList<ContactData>();
-    List<WebElement> elements = wd.findElements(By.cssSelector("tr.name"));//Получаем список объектов типа element по тегу tr, у которого параметр name.
+    List<WebElement> elements = wd.findElements(By.cssSelector("tr[name='entry']"));//Получаем список объектов типа element по тегу tr, у которого параметр name.
     for (WebElement element : elements){//Инициализируем цикл по перебору массива полученных элементов.
-      String name = element.getText();//Получаем с каждого элемента его текст, который идет в переменную name
-
+      List<WebElement> cells = element.findElements(By.tagName("td"));
+      String lastname = cells.get(1).getText();//Получаем с каждого элемента его текст, который идет в переменную name
+      String firstname = cells.get(2).getText();
       //Получаем элемент input, у которого получаем аттрибут id, и сохраняем это все в переменную id. Метод Integer.parseInt преобразует строку в число.
       int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
-      ContactData contact = new ContactData(id, null, null, name, null,
+      ContactData contact = new ContactData(id, firstname, null, lastname, null,
               null, null, null, null, null);// Создаем объект типа ContactData с именем contact, который будет использоваться для добавления в список
       contacts.add(contact);// Добавляем созданный объект в спискок
     }
