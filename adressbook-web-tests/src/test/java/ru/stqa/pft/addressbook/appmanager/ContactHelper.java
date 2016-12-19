@@ -3,10 +3,14 @@ package ru.stqa.pft.addressbook.appmanager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ContactHelper extends HelperBase  {
 
@@ -65,5 +69,26 @@ public class ContactHelper extends HelperBase  {
 
   public boolean isThereAContact() {
     return isElementPresent(By.xpath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img"));
+  }
+
+  //Создан отдельный метод подсчитывающий количество контактов
+  public int getContactCount() {
+    return wd.findElements(By.name("selected[]")).size();
+  }
+
+  //Создан отдельный метод подсчитывающий количество контактов, как объектов в списке
+  public List<ContactData> getContactList() {
+    List<ContactData> contacts = new ArrayList<ContactData>();
+    List<WebElement> elements = wd.findElements(By.cssSelector("tr.name"));//Получаем список объектов типа element по тегу tr, у которого параметр name.
+    for (WebElement element : elements){//Инициализируем цикл по перебору массива полученных элементов.
+      String name = element.getText();//Получаем с каждого элемента его текст, который идет в переменную name
+
+      //Получаем элемент input, у которого получаем аттрибут id, и сохраняем это все в переменную id. Метод Integer.parseInt преобразует строку в число.
+      int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
+      ContactData contact = new ContactData(id, null, null, name, null,
+              null, null, null, null, null);// Создаем объект типа ContactData с именем contact, который будет использоваться для добавления в список
+      contacts.add(contact);// Добавляем созданный объект в спискок
+    }
+    return contacts;
   }
 }
