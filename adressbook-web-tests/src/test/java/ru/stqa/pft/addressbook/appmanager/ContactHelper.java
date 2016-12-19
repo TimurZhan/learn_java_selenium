@@ -57,8 +57,8 @@ public class ContactHelper extends HelperBase  {
     wd.switchTo().alert().accept();
   }
 
-  public void selectToDeleteContact() {
-    click(By.xpath("//div/div[4]/form[2]/table/tbody/tr[2]/td[1]/input[@name='selected[]']"));
+  public void selectToDeleteContact(int index) {
+    wd.findElements(By.xpath("//div/div[4]/form[2]/table/tbody//input[@name='selected[]']")).get(index).click();
   }
 
   public void createContact(ContactData contact, boolean creation) {
@@ -81,9 +81,9 @@ public class ContactHelper extends HelperBase  {
     List<ContactData> contacts = new ArrayList<ContactData>();
     List<WebElement> elements = wd.findElements(By.cssSelector("tr[name='entry']"));//Получаем список объектов типа element по тегу tr, у которого параметр name.
     for (WebElement element : elements){//Инициализируем цикл по перебору массива полученных элементов.
-      List<WebElement> cells = element.findElements(By.tagName("td"));
-      String lastname = cells.get(1).getText();//Получаем с каждого элемента его текст, который идет в переменную name
-      String firstname = cells.get(2).getText();
+      List<WebElement> cells = element.findElements(By.tagName("td"));//Так как имя и фамилия пользователя - это текст отдельных ячеек строки, строку разбиваем на ячейки
+      String lastname = cells.get(1).getText();//Получаем от элемента его текст, который идет в переменную lastname
+      String firstname = cells.get(2).getText();//Получаем от элемента его текст, который идет в переменную firstname
       //Получаем элемент input, у которого получаем аттрибут id, и сохраняем это все в переменную id. Метод Integer.parseInt преобразует строку в число.
       int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
       ContactData contact = new ContactData(id, firstname, null, lastname, null,
