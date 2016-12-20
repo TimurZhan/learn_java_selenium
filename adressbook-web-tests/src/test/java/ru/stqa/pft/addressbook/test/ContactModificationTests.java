@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ContactModificationTests extends TestBase {
 
-  @Test
+  @Test(enabled = false)
   public void testContactModification() {
     if (! app.getContactHelper().isThereAContact()){//Создана проверка предусловия того, что удаляемая группа существует.
       app.getContactHelper().createContact(new ContactData("Test1", "Test2", "Test3", "Test Company", "Test address",

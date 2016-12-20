@@ -7,7 +7,8 @@ import ru.stqa.pft.addressbook.model.ContactData;
 import java.util.List;
 
 public class ContactDelitionTests extends TestBase {
-    @Test
+
+    @Test(enabled = false)
     public void testContactDelition() {
       if (! app.getContactHelper().isThereAContact()){//Создана проверка предусловия того, что удаляемая группа существует.
         app.getContactHelper().createContact(new ContactData("Test1", "Test2", "Test3", "Test Company", "Test address",
@@ -24,4 +25,5 @@ public class ContactDelitionTests extends TestBase {
       Assert.assertEquals(before, after);
       app.getSessionHelper().logoutProgram();
     }
+
 }

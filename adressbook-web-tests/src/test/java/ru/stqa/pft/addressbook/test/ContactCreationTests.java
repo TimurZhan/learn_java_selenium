@@ -9,7 +9,7 @@ import java.util.List;
 
 public class ContactCreationTests extends TestBase {
 
-  @Test
+  @Test(enabled = false)
   public void ContactCreationTests() {
     List<ContactData> before = app.getContactHelper().getContactList();//Тут происходит подсчет количества контактов(элементов в списке) ДО создания контакта.
     app.getContactHelper().initContact();
@@ -38,7 +38,7 @@ public class ContactCreationTests extends TestBase {
     before.sort(byId);//Сортируем списко "ДО" по ID объектов, находящихся в нем.
     after.sort(byId);//Сортируем списко "ПОСЛЕ" по ID объектов, находящихся в нем.
     Assert.assertEquals(before, after);//Cравниваем списки, после их упорядочивания.
-    app.getSessionHelper().logoutProgram();
+    //app.getSessionHelper().logoutProgram();
   }
 
 }

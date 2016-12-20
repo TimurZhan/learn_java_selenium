@@ -35,6 +35,6 @@ public class GroupModificationTests extends TestBase {
     before.sort(byId);//Сортируем списко "ДО" по ID объектов, находящихся в нем.
     after.sort(byId);//Сортируем списко "ПОСЛЕ" по ID объектов, находящихся в нем.
     Assert.assertEquals(before, after);//Cравниваем списки после их упорядочивания.
-    app.getSessionHelper().logoutProgram();
+    //app.getSessionHelper().logoutProgram();
   }
 }
