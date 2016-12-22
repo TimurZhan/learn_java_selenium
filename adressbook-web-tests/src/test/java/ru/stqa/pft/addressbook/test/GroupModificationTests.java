@@ -13,18 +13,18 @@ public class GroupModificationTests extends TestBase {
   @BeforeMethod//Метод осуществляющий проверку предусловия.
   public void ensurePrecondition(){
     app.goTo().groupPage();
-    if (! app.getGroupHelper().isThereAGroup()){ //Создана проверка предусловия того, что редактируемая группа существует.
-      app.getGroupHelper().createGroup(new GroupData("Test1", "drgdgdg", "dgfdgdgdgd"));
+    if (app.group().list().size() == 0){ //Создана проверка предусловия того, что редактируемая группа существует.
+      app.group().create(new GroupData("Test1", "drgdgdg", "dgfdgdgdgd"));
     }
   }
 
   @Test//Аннотация к тесту
   public void testGroupModification() {
-    List<GroupData> before = app.getGroupHelper().getGroupList();//Тут происходит подсчет количества групп(элементов в списке) ДО создания группы.
+    List<GroupData> before = app.group().list();//Тут происходит подсчет количества групп(элементов в списке) ДО создания группы.
     int index = before.size() - 1;
     GroupData group = new GroupData(before.get(index).getId(), "Test1", "Test2", "dBd36b");//При модификации группы указываем все новое, кроме id. Его мы берем от домодифицированной группы.
-    app.getGroupHelper().modifyGroup(index, group);//Шаги по модификации группы вынесены в отдельный метод
-    List<GroupData> after = app.getGroupHelper().getGroupList();//Тут происходит подсчет количества групп (элементов в списке) ПОСЛЕ создания группы.
+    app.group().modify(index, group);//Шаги по модификации группы вынесены в отдельный метод
+    List<GroupData> after = app.group().list();//Тут происходит подсчет количества групп (элементов в списке) ПОСЛЕ создания группы.
     Assert.assertEquals(after.size(), before.size());//Тут реализована проверка количества групп (размер списка групп)
     before.remove(index);//Удаляем модифицированную группу из списка before. Нужно для дальнейшего сравнения.
     before.add(group);//Добавляем получившуюся, после модификации, группу в спискок before. Нужно для дальнейшего сравнения.

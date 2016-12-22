@@ -14,7 +14,7 @@ public class NavigationHelper extends HelperBase {
   }
 
   //Создан отдельный вспомогательный метод для шага перехода в раздел "Группы".
-  public void gotoGroupPage() {
+  public void groupPage() {
     if (isElementPresent(By.tagName("h1"))// Создана конструкция "if", которая проверяет дислоцирование на странице "Groups"
             && wd.findElement(By.tagName("h1")).getText().equals("Groups")
             && isElementPresent(By.name("new"))){

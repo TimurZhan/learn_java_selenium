@@ -17,7 +17,7 @@ public class ContactCreationTests extends TestBase {
             "8900045001", "test1test3test2@mail.ru", "Test address 2", "Test1");
     app.getContactHelper().fillContactForm(contact, true);//true означает, что поле для выбора контактов, тут должно быть
     app.getContactHelper().submitContact();
-    app.getNavigationHelper().returnToHomePage();
+    app.goTo().returnToHomePage();
     List<ContactData> after = app.getContactHelper().getContactList();//Тут происходит подсчет количества контактов (элементов в списке) ПОСЛЕ создания контакта.
     Assert.assertEquals(after.size(), before.size() + 1);//Тут реализована проверка количества элементов (размер списка контактов), до и после. Необходимо, чтобы значения совпадали.
 

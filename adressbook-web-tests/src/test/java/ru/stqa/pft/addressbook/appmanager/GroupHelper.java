@@ -40,11 +40,17 @@ public class GroupHelper extends HelperBase {
     click(By.name("new"));
   }
 
-  public void modifyGroup(int index, GroupData group) { //Метод для модификации групп в адресной книге
+  public void modify(int index, GroupData group) { //Метод для модификации групп в адресной книге
     selectGroup(index);//В параметре указывается индекс элемента. "before - 1", это последний элемент в списке
     initGroupModification();
     fillGroupForm(group);
     submitGroupModification();
+    returnToGroupPage();
+  }
+
+  public void delete(int index) {
+    selectGroup(index);//В параметре указывается индекс элемента. "before - 1", это последний элемент в списке
+    deleteSelectedGroups();
     returnToGroupPage();
   }
 
@@ -64,7 +70,7 @@ public class GroupHelper extends HelperBase {
     click(By.name("update"));
   }
 
-  public void createGroup(GroupData group) {
+  public void create(GroupData group) {
     initGroupCreation();
     fillGroupForm(group); //Данный метод сделан универсальным
     submitGroupCreation();
@@ -82,7 +88,7 @@ public class GroupHelper extends HelperBase {
   }
 
   //Создан отдельный метод подсчитывающий количество групп как объектов в списке
-  public List<GroupData> getGroupList() {
+  public List<GroupData> list() {
     List<GroupData> groups = new ArrayList<GroupData>();
     List<WebElement> elements = wd.findElements(By.cssSelector("span.group"));//Получаем список объектов типа element по тегу span, у которого параметр класс group.
     for (WebElement element : elements){//Инициализируем цикл по перебору массива полученных элементов.

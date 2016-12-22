@@ -43,11 +43,11 @@ public class ApplicationManager {
     wd.quit();
   }
 
-  public GroupHelper getGroupHelper() {
+  public GroupHelper group() {
     return groupHelper;
   }
 
-  public NavigationHelper getNavigationHelper() {
+  public NavigationHelper goTo() {//Метод, предоставляющий доступ к методу NavigationHelper, для других методов и классов.
     return navigationHelper;
   }
 
