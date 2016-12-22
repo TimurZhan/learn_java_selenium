@@ -40,6 +40,14 @@ public class GroupHelper extends HelperBase {
     click(By.name("new"));
   }
 
+  public void modifyGroup(int index, GroupData group) { //Метод для модификации групп в адресной книге
+    selectGroup(index);//В параметре указывается индекс элемента. "before - 1", это последний элемент в списке
+    initGroupModification();
+    fillGroupForm(group);
+    submitGroupModification();
+    returnToGroupPage();
+  }
+
   public void deleteSelectedGroups() {
     click(By.name("delete"));
   }
