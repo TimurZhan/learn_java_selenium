@@ -14,7 +14,7 @@ public class GroupCreationTests extends TestBase { //Создан базовый
     //Тут каждый шаг теста выделен в отдельный вспомогательный метод
     app.goTo().groupPage();
     List<GroupData> before = app.group().list();//Тут происходит подсчет количества групп(элементов в списке) ДО создания группы.
-    GroupData group = new GroupData("Test1", "drgdgdg", "dgfdgdgdgd");
+    GroupData group = new GroupData().withName("Тест 2222");
     app.group().create(group);
     List<GroupData> after = app.group().list();//Тут происходит подсчет количества групп (элементов в списке) ПОСЛЕ создания группы.
     Assert.assertEquals(after.size(), before.size() + 1);//Тут реализована проверка количества элементов (размер списка групп), до и после. Необходимо, чтобы значения совпадали.
@@ -24,8 +24,8 @@ public class GroupCreationTests extends TestBase { //Создан базовый
      * Функция max (сравниватель) проходит по этому потоку и находит элемент с максимальным ID, в котором
      * сравниваются объекты типа GroupData (o1, o2), путем сравнения их ID. Затем, при помощи ".get()" берется найденный
      * максимальный ID и передается далее, при помощи ".getId()".
+     group.setId(after.stream().max(((o1, o2) -> Integer.compare(o1.getId(), o2.getId()))).get().getId());
      */
-    group.setId(after.stream().max(((o1, o2) -> Integer.compare(o1.getId(), o2.getId()))).get().getId());
     before.add(group);//Добавляем в старый список новосозданную группу.
 
     /**

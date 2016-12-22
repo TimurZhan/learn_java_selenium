@@ -14,7 +14,7 @@ public class GroupModificationTests extends TestBase {
   public void ensurePrecondition(){
     app.goTo().groupPage();
     if (app.group().list().size() == 0){ //Создана проверка предусловия того, что редактируемая группа существует.
-      app.group().create(new GroupData("Test1", "drgdgdg", "dgfdgdgdgd"));
+      app.group().create(new GroupData().withName("Test1"));
     }
   }
 
@@ -22,7 +22,8 @@ public class GroupModificationTests extends TestBase {
   public void testGroupModification() {
     List<GroupData> before = app.group().list();//Тут происходит подсчет количества групп(элементов в списке) ДО создания группы.
     int index = before.size() - 1;
-    GroupData group = new GroupData(before.get(index).getId(), "Test1", "Test2", "dBd36b");//При модификации группы указываем все новое, кроме id. Его мы берем от домодифицированной группы.
+    GroupData group = new GroupData()
+            .withId(before.get(index).getId()).withName("Test1").withFooter("Test2").withHeader("dBd36b");//При модификации группы указываем все новое, кроме id. Его мы берем от домодифицированной группы.
     app.group().modify(index, group);//Шаги по модификации группы вынесены в отдельный метод
     List<GroupData> after = app.group().list();//Тут происходит подсчет количества групп (элементов в списке) ПОСЛЕ создания группы.
     Assert.assertEquals(after.size(), before.size());//Тут реализована проверка количества групп (размер списка групп)

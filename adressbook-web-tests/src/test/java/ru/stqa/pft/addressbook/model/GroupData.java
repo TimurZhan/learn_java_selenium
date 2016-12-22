@@ -1,15 +1,14 @@
 package ru.stqa.pft.addressbook.model;
 
 public class GroupData {
-  private int id;
-  private final String name;
-  private final String header;
-  private final String footer;
+  private int id = Integer.MAX_VALUE;;
+  private String name;
+  private String header;
+  private String footer;
 
-  /**
-   * Создан конструктор, который НЕ принимает ID в качестве параметра.
-   * Будет использоваться в случае, если в тестах будет использоваться данный объект без id.
-   */
+  /** КОНСТРУКТОР УДАЛЕН при модификации данного объекта.
+   Создан конструктор, который НЕ принимает ID в качестве параметра.
+   Будет использоваться в случае, если в тестах будет использоваться данный объект без id.
   public GroupData(String name, String header, String footer) {
     this.id = Integer.MAX_VALUE;//Дефолтное значение для ID будет самое большое целое число (нужно для того, чтобы создаваемая группа оказалась последней при сортировке).
     this.name = name;
@@ -17,19 +16,38 @@ public class GroupData {
     this.footer = footer;
   }
 
+
+  /** КОНСТРУКТОР УДАЛЕН при модификации данного объекта.
   public GroupData(int id, String name, String header, String footer) {
     this.id = id;
     this.name = name;
     this.header = header;
     this.footer = footer;
   }
+  */
+
+  public GroupData withId(int id) {
+    this.id = id;
+    return this;
+  }
+
+  public GroupData withName(String name) {
+    this.name = name;
+    return this;
+  }
+
+  public GroupData withHeader(String header) {
+    this.header = header;
+    return this;
+  }
+
+  public GroupData withFooter(String footer) {
+    this.footer = footer;
+    return this;
+  }
 
   public int getId() {
     return id;
-  }
-
-  public void setId(int id) {
-    this.id = id;
   }
 
   public String getName() {
@@ -67,4 +85,5 @@ public class GroupData {
   public int hashCode() {
     return name != null ? name.hashCode() : 0;
   }
+
 }
