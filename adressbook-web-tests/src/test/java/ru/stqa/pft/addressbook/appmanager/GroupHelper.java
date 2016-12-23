@@ -3,11 +3,12 @@ package ru.stqa.pft.addressbook.appmanager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import ru.stqa.pft.addressbook.model.GroupData;
+import ru.stqa.pft.addressbook.model.Groups;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Создан вспомогательный класс. Т.н. помошник по работе с руппами.
@@ -40,16 +41,16 @@ public class GroupHelper extends HelperBase {
     click(By.name("new"));
   }
 
-  public void modify(int index, GroupData group) { //Метод для модификации групп в адресной книге
-    selectGroup(index);//В параметре указывается индекс элемента. "before - 1", это последний элемент в списке
+  public void modify(GroupData group) { //Метод для модификации групп в адресной книге
+    selectGroupById(group.getId());//В параметре указывается индекс элемента. "before - 1", это последний элемент в списке
     initGroupModification();
     fillGroupForm(group);
     submitGroupModification();
     returnToGroupPage();
   }
 
-  public void delete(int index) {
-    selectGroup(index);//В параметре указывается индекс элемента. "before - 1", это последний элемент в списке
+  public void delete(GroupData group) {//В параметре указывается элемент (группа), который будет удален. "before - 1", это последний элемент в списке
+    selectGroupById(group.getId());// Группа будет удаляться по Id
     deleteSelectedGroups();
     returnToGroupPage();
   }
@@ -58,8 +59,8 @@ public class GroupHelper extends HelperBase {
     click(By.name("delete"));
   }
 
-  public void selectGroup(int index) {//Принимает в параметр индекс элемента.
-    wd.findElements(By.name("selected[]")).get(index).click();//Выбирает выбранный по индексу элемент.
+  public void selectGroupById(int id) {//Данный метод выбирает группу по ID (принимает в параметр id элемента).
+    wd.findElement(By.cssSelector("input[value='" + id + "']")).click();//Выбирает выбранный по id элемент.
   }
 
   public void initGroupModification() {
@@ -87,9 +88,9 @@ public class GroupHelper extends HelperBase {
     return wd.findElements(By.name("selected[]")).size();
   }
 
-  //Создан отдельный метод подсчитывающий количество групп как объектов в списке
-  public List<GroupData> list() {
-    List<GroupData> groups = new ArrayList<GroupData>();
+  //Создан отдельный метод подсчитывающий количество групп как объектов и возвращающий их как множество (НЕ упорядоченное количество элементов)
+  public Groups all() {
+    Groups groups = new Groups();//Тут создается множество элементов типа GroupData
     List<WebElement> elements = wd.findElements(By.cssSelector("span.group"));//Получаем список объектов типа element по тегу span, у которого параметр класс group.
     for (WebElement element : elements){//Инициализируем цикл по перебору массива полученных элементов.
       String name = element.getText();//Получаем с каждого элемента его текст, который идет в переменную name
@@ -98,4 +99,5 @@ public class GroupHelper extends HelperBase {
     }
     return groups;
   }
+
 }
