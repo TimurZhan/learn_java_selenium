@@ -8,6 +8,7 @@ import ru.stqa.pft.addressbook.model.Groups;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.testng.Assert.assertEquals;
 
 public class GroupDeletionTests extends TestBase {
 
@@ -29,8 +30,8 @@ public class GroupDeletionTests extends TestBase {
      */
     GroupData deletedGroup = before.iterator().next();
     app.group().delete(deletedGroup);
+    assertThat(app.group().count(), equalTo(before.size() - 1));//Тут реализована проверка количества элементов (размер списка групп), до и после. Необходимо, чтобы значения совпадали.
     Groups after = app.group().all();//Тут происходит подсчет количества групп (элементов в множестве) ПОСЛЕ создания группы.
-    Assert.assertEquals(after.size(), before.size() - 1);//Тут реализована проверка количества элементов (размер множества групп), до и после. Необходимо, чтобы значение before было меньше значения after.
     assertThat(after, equalTo(before.without(deletedGroup))); //Проверка того, что группа удалилась.
     //app.getSessionHelper().logoutProgram();
   }

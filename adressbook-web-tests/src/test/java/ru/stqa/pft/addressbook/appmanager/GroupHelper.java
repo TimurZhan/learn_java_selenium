@@ -87,7 +87,7 @@ public class GroupHelper extends HelperBase {
   }
 
   //Создан отдельный метод подсчитывающий количество групп
-  public int getGroupCount() {
+  public int count() {
     return wd.findElements(By.name("selected[]")).size();
   }
 

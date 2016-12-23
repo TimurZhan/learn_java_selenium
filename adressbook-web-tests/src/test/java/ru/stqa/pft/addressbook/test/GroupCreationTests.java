@@ -17,8 +17,8 @@ public class GroupCreationTests extends TestBase { //Создан базовый
     Groups before = app.group().all();//Тут происходит подсчет количества групп(элементов в множестве) ДО создания группы.
     GroupData group = new GroupData().withName("Тест 2222");
     app.group().create(group);
+    assertThat(app.group().count(), equalTo(before.size() + 1));//Тут реализована проверка количества элементов (размер списка групп), до и после. Необходимо, чтобы значения совпадали.
     Groups after = app.group().all();//Тут происходит подсчет количества групп (элементов в множестве) ПОСЛЕ создания группы.
-    assertThat(after.size(), equalTo(before.size() + 1));//Тут реализована проверка количества элементов (размер списка групп), до и после. Необходимо, чтобы значения совпадали.
 
     /**MatcherAssert, это проверка используемая из бибилиотеки hamcrest.
      * Где метод assertThat проверяет множества after и before между собой. В нем присутствует класс CoreMatchers, в котором,
@@ -31,6 +31,24 @@ public class GroupCreationTests extends TestBase { //Создан базовый
      */
     assertThat(after, equalTo(before.withAdded(group.withId(after.stream().mapToInt((g)-> g.getId()).max().getAsInt()))));
 
+    //app.getSessionHelper().logoutProgram();
+  }
+
+  @Test //Негативный тест. Проверяет что группа НЕ создалась.
+  public void testBadGroupCreation() {
+    //Тут каждый шаг теста выделен в отдельный вспомогательный метод
+    app.goTo().groupPage();
+    Groups before = app.group().all();//Тут происходит подсчет количества групп(элементов в множестве) ДО создания группы.
+    GroupData group = new GroupData().withName("Тест 222'2");
+    app.group().create(group);
+    assertThat(app.group().count(), equalTo(before.size()));//Тут реализована проверка количества элементов (размер списка групп), до и после. Необходимо, чтобы значения совпадали.
+    Groups after = app.group().all();//Тут происходит подсчет количества групп (элементов в множестве) ПОСЛЕ создания группы.
+
+    /**
+     * Метод assertThat проверяет множества after и before между собой. В нем присутствует класс CoreMatchers, в котором,
+     * в свою очередь, присутствует метод equalTo(), вот он и используется для проверки.
+     */
+    assertThat(after, equalTo(before));
     //app.getSessionHelper().logoutProgram();
   }
 
