@@ -41,17 +41,27 @@ public class GroupHelper extends HelperBase {
     click(By.name("new"));
   }
 
+  public void create(GroupData group) {
+    initGroupCreation();
+    fillGroupForm(group); //Данный метод сделан универсальным
+    submitGroupCreation();
+    groupCashe = null; //На данном шаге очищаем кеш (это происходит, если список групп изменился).
+    returnToGroupPage();
+  }
+
   public void modify(GroupData group) { //Метод для модификации групп в адресной книге
     selectGroupById(group.getId());//В параметре указывается индекс элемента. "before - 1", это последний элемент в списке
     initGroupModification();
     fillGroupForm(group);
     submitGroupModification();
+    groupCashe = null; //На данном шаге очищаем кеш (это происходит, если список групп изменился).
     returnToGroupPage();
   }
 
   public void delete(GroupData group) {//В параметре указывается элемент (группа), который будет удален. "before - 1", это последний элемент в списке
     selectGroupById(group.getId());// Группа будет удаляться по Id
     deleteSelectedGroups();
+    groupCashe = null; //На данном шаге очищаем кеш (это происходит, если список групп изменился).
     returnToGroupPage();
   }
 
@@ -71,13 +81,6 @@ public class GroupHelper extends HelperBase {
     click(By.name("update"));
   }
 
-  public void create(GroupData group) {
-    initGroupCreation();
-    fillGroupForm(group); //Данный метод сделан универсальным
-    submitGroupCreation();
-    returnToGroupPage();
-  }
-
   //Создан отдельный метод для проверки наличия уже созданной группы
   public boolean isThereAGroup() {
     return isElementPresent(By.name("selected[]"));
@@ -88,16 +91,22 @@ public class GroupHelper extends HelperBase {
     return wd.findElements(By.name("selected[]")).size();
   }
 
+  //Создан метод для кеширования групп (его множества).
+  private Groups groupCashe = null;
+
   //Создан отдельный метод подсчитывающий количество групп как объектов и возвращающий их как множество (НЕ упорядоченное количество элементов)
   public Groups all() {
-    Groups groups = new Groups();//Тут создается множество элементов типа GroupData
+    if (groupCashe != null){//Тут происходит проверка, если кеш не пустой, то его и вовзвращаем, точнее его копию.
+      return new Groups(groupCashe);
+    }
+    groupCashe = new Groups();//Тут создается множество элементов типа GroupData
     List<WebElement> elements = wd.findElements(By.cssSelector("span.group"));//Получаем список объектов типа element по тегу span, у которого параметр класс group.
     for (WebElement element : elements){//Инициализируем цикл по перебору массива полученных элементов.
       String name = element.getText();//Получаем с каждого элемента его текст, который идет в переменную name
       int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));//Получаем элемент input, у которого получаем аттрибут value, и сохраняем это все в переменную id. Метод Integer.parseInt преобразует строку в число.
-      groups.add(new GroupData().withId(id).withName(name));//Создаем объект типа GroupData с именем group, который будет использоваться для добавления в список
+      groupCashe.add(new GroupData().withId(id).withName(name));//Создаем объект типа GroupData с именем group, который будет использоваться для добавления в список
     }
-    return groups;
+    return new Groups(groupCashe);//Тут возвращаем копию кеша
   }
 
 }
