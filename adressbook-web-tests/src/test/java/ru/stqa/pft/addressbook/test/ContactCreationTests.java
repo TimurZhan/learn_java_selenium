@@ -1,17 +1,18 @@
 package ru.stqa.pft.addressbook.test;
 
-import org.testng.Assert;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
+import ru.stqa.pft.addressbook.model.Contacts;
 
-import java.util.Set;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ContactCreationTests extends TestBase {
 
   @Test //(enabled = false)
   public void contactCreationTests() {
     app.goTo().homePage();
-    Set<ContactData> before = app.contact().all();//Тут происходит подсчет количества контактов(элементов в списке) ДО создания контакта.
+    Contacts before = app.contact().all();//Тут происходит подсчет количества контактов(элементов в списке) ДО создания контакта.
     ContactData contact = new ContactData()
             .withFirstname("sdfTest")
             .withMiddlename("Tsdfsdfesу2")
@@ -26,14 +27,10 @@ public class ContactCreationTests extends TestBase {
     app.contact().fillContactForm(contact, true);
     app.contact().submitContact();
     app.goTo().homePage();
-    Set<ContactData> after = app.contact().all();//Тут происходит подсчет количества контактов (элементов в списке) ПОСЛЕ создания контакта.
-    Assert.assertEquals(after.size(), before.size() + 1);//Тут реализована проверка количества элементов (размер списка контактов), до и после. Необходимо, чтобы значения совпадали.
-    contact.withId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt());
-    before.add(contact);
-    Assert.assertEquals(before, after);//Cравниваем списки, после их упорядочивания.
-    //app.getSessionHelper().logoutProgram();
+    Contacts after = app.contact().all();//Тут происходит подсчет количества контактов (элементов в списке) ПОСЛЕ создания контакта.
+    assertThat(after.size(), equalTo(before.size() + 1));//Тут реализована проверка количества элементов (размер списка контактов), до и после. Необходимо, чтобы значения совпадали.
+    assertThat(after, equalTo(
+            before.withAdded(contact.withId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt()))));//Cравниваем списки, после их упорядочивания.
   }
-
-
 
 }

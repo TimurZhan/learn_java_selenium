@@ -4,8 +4,13 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
+import ru.stqa.pft.addressbook.model.Contacts;
 
 import java.util.Set;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.testng.Assert.assertEquals;
 
 public class ContactModificationTests extends TestBase {
 
@@ -28,7 +33,7 @@ public class ContactModificationTests extends TestBase {
 
   @Test
   public void testContactModification() {
-    Set<ContactData> before = app.contact().all();
+    Contacts before = app.contact().all();
     ContactData modifidedContact = before.iterator().next();
     ContactData contact = new ContactData()
             .withId(modifidedContact.getId())
@@ -43,10 +48,8 @@ public class ContactModificationTests extends TestBase {
             .withGroup("Тест 2222");
     app.contact().modify(contact);
     app.goTo().homePage();
-    Set<ContactData> after = app.contact().all();
-    Assert.assertEquals(after.size(), before.size());//Тут реализована проверка количества контактов (размер списка контактов)
-    before.remove(modifidedContact);//Удаляем модифицированный контакт из списка before. Нужно для дальнейшего сравнения.
-    before.add(contact);//Добавляем получившийся, после модификации, контакт в спискок before. Нужно для дальнейшего сравнения.
-    //app.getSessionHelper().logoutProgram();
+    Contacts after = app.contact().all();
+    assertEquals(after.size(), before.size());//Тут реализована проверка количества контактов (размер списка контактов)
+    assertThat(after, equalTo(before.without(modifidedContact).withAdded(contact)));//Тут реализовано сравнение списков after и before между собой
   }
 }
