@@ -44,7 +44,7 @@ public class ContactModificationTests extends TestBase {
     Comparator<? super ContactData> byId = (g1, g2) -> Integer.compare(g1.getId(), g2.getId());
     before.sort(byId);//Сортируем список "ДО" по ID объектов, находящихся в нем.
     after.sort(byId);//Сортируем список "ПОСЛЕ" по ID объектов, находящихся в нем.
-    Assert.assertEquals(after.size(), before.size());///Cравниваем списки после их упорядочивания.
+    Assert.assertEquals(before, after);///Cравниваем списки после их упорядочивания.
     app.getSessionHelper().logoutProgram();
   }
 }

@@ -20,13 +20,19 @@ public class HelperBase {
  * Но этот метод можно использовать и в других классах
  */
   protected void click(By locator) {
+
     wd.findElement(locator).click();
+  }
+
+  protected void clear(By locator){
+    wd.findElement(locator).clear();
   }
 
   /**Создан отдельный вспомогательный метод "type" для другого вспомогательного метода "fillGroupForm" класса "GroupHelper".
    * Но этот метод можно использовать и в других классах
   */
   protected void type(By locator, String text) {
+    clear(locator);
     click(locator);
     if (text != null) {
       String exsistingText = wd.findElement(locator).getAttribute("value"); //Извлечение значения из поля, в котором оно хранится.

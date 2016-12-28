@@ -29,7 +29,7 @@ public class ContactCreationTests extends TestBase {
     app.goTo().returnToHomePage();
     List<ContactData> after = app.getContactHelper().getContactList();//Тут происходит подсчет количества контактов (элементов в списке) ПОСЛЕ создания контакта.
     Assert.assertEquals(after.size(), before.size() + 1);//Тут реализована проверка количества элементов (размер списка контактов), до и после. Необходимо, чтобы значения совпадали.
-
+    before.add(contact);
     /**
      * Тут задействовано лямбда-выражение(анонимная функция) "contact.setId". Метод stream превращает список в поток.
      * Функция max (сравниватель) проходит по этому потоку и находит элемент с максимальным ID, в котором
@@ -46,7 +46,7 @@ public class ContactCreationTests extends TestBase {
     Comparator<? super ContactData> byId = (g1, g2) -> Integer.compare(g1.getId(), g2.getId());
     before.sort(byId);//Сортируем списко "ДО" по ID объектов, находящихся в нем.
     after.sort(byId);//Сортируем списко "ПОСЛЕ" по ID объектов, находящихся в нем.
-    Assert.assertEquals(after.size(), before.size() + 1);//Cравниваем списки, после их упорядочивания.
+    Assert.assertEquals(before, after);//Cравниваем списки, после их упорядочивания.
     //app.getSessionHelper().logoutProgram();
   }
 

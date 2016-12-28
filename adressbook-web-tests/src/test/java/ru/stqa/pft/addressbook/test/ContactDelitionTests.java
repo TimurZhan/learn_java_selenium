@@ -21,6 +21,7 @@ public class ContactDelitionTests extends TestBase {
     app.goTo().returnToHomePage();
     List<ContactData> after = app.getContactHelper().getContactList();//Тут происходит подсчет количества контактов (элементов в списке) ПОСЛЕ удаления контакта.
     Assert.assertEquals(after.size(), before.size() - 1);
+    before.remove(before.size() - 1);
     /**
      * Тут задействовано лямбда-выражение(анонимная функция), которая помещена в переменную " Comparator<? super GroupData> byId".
      * В данной функции, на вход принимаются 2 объекта, типа ContactData (g1, g2). Затем, при помощи "Integer.compare" они сравниваются, путем сравнения их ID.
@@ -28,7 +29,7 @@ public class ContactDelitionTests extends TestBase {
     Comparator<? super ContactData> byId = (g1, g2) -> Integer.compare(g1.getId(), g2.getId());
     before.sort(byId);//Сортируем список "ДО" по ID объектов, находящихся в нем.
     after.sort(byId);//Сортируем список "ПОСЛЕ" по ID объектов, находящихся в нем.
-    Assert.assertEquals(after.size(), before.size() - 1);
+    Assert.assertEquals(after, before);
     app.getSessionHelper().logoutProgram();
   }
 }
