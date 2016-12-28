@@ -23,7 +23,8 @@ public class NavigationHelper extends HelperBase {
       click(By.linkText("groups"));
   }
 
-  public void returnToHomePage() {
+  //Создан отдельный вспомогательный метод для шага перехода в раздел "Контакты".
+  public void homePage() {
     if (isElementPresent(By.id("maintable"))){
       return;
     }
