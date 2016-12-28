@@ -7,8 +7,9 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ContactHelper extends HelperBase  {
 
@@ -40,32 +41,32 @@ public class ContactHelper extends HelperBase  {
     click(By.linkText("add new"));
   }
 
-  public void modify(int index, ContactData contact) {
-    initContactModification(index);
+  public void modify(ContactData contact) {
+    initContactModificationById(contact.getId());
     fillContactForm(contact, false); //false означает, что поле для выбора групп, тут НЕ должно быть
     submitContactModification();
   }
 
-  public void initContactModification(int index) {
-    wd.findElements(By.cssSelector("img[title='Edit']")).get(index).click();
+  public void initContactModificationById(int id) {
+    wd.findElement(By.xpath(String.format("//a[@href='edit.php?id=%s']", id))).click();
   }
 
   public void submitContactModification() {
     click(By.xpath("//div[@id='content']/form[1]/input[22]"));
   }
 
-  public void delete(int index) {
-    selectToDeleteContact(index);
+  public void delete(ContactData deletedContact) {
+    selectToDeleteContactById(deletedContact.getId());
     deleteContact();
+  }
+
+  public void selectToDeleteContactById(int id) {
+    wd.findElement(By.cssSelector("input[value='" + id + "']")).click();
   }
 
   public void deleteContact() {
     click(By.xpath("//div[@id='content']/form[2]/div[2]/input"));
     wd.switchTo().alert().accept();
-  }
-
-  public void selectToDeleteContact(int index) {
-    wd.findElements(By.xpath("//div/div[4]/form[2]/table/tbody//input[@name='selected[]']")).get(index).click();
   }
 
   public void create(ContactData contact, boolean creation) {
@@ -84,8 +85,8 @@ public class ContactHelper extends HelperBase  {
   }
 
   //Создан отдельный метод подсчитывающий количество контактов, как объектов в списке
-  public List<ContactData> list() {
-    List<ContactData> contacts = new ArrayList<ContactData>();
+  public Set<ContactData> all() {
+    Set<ContactData> contacts = new HashSet<ContactData>();
     List<WebElement> elements = wd.findElements(By.cssSelector("tr[name='entry']"));//Получаем список объектов типа element по тегу tr, у которого параметр name.
     for (WebElement element : elements){//Инициализируем цикл по перебору массива полученных элементов.
       List<WebElement> cells = element.findElements(By.tagName("td"));//Так как имя и фамилия пользователя - это текст отдельных ячеек строки, строку разбиваем на ячейки
