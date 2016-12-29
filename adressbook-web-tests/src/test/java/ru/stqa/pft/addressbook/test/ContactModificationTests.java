@@ -48,8 +48,9 @@ public class ContactModificationTests extends TestBase {
             .withGroup("Тест 2222");
     app.contact().modify(contact);
     app.goTo().homePage();
+    //Тут реализована проверка количества элементов (размер списка контактов), до и после. Необходимо, чтобы значения совпадали.
+    assertThat(app.contact().count(), equalTo(before.size()));
     Contacts after = app.contact().all();
-    assertEquals(after.size(), before.size());//Тут реализована проверка количества контактов (размер списка контактов)
     assertThat(after, equalTo(before.without(modifidedContact).withAdded(contact)));//Тут реализовано сравнение списков after и before между собой
   }
 }

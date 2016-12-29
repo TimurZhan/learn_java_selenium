@@ -40,8 +40,9 @@ public class ContactDelitionTests extends TestBase {
     ContactData deletedContact = before.iterator().next();
     app.contact().delete(deletedContact);
     app.goTo().homePage();
+    //Тут реализована проверка количества элементов (размер списка контактов), до и после. Необходимо, чтобы значения совпадали.
+    assertThat(app.contact().count(), equalTo(before.size() - 1));
     Contacts after = app.contact().all();//Тут происходит подсчет количества контактов (элементов в списке) ПОСЛЕ удаления контакта.
-    assertEquals(after.size(), before.size() - 1);
     assertThat(after, equalTo(before.without(deletedContact)));
     //app.getSessionHelper().logoutProgram();
   }

@@ -84,7 +84,7 @@ public class ContactHelper extends HelperBase  {
   }
 
   //Создан отдельный метод подсчитывающий количество контактов
-  public int getContactCount() {
+  public int count() {
     return wd.findElements(By.name("selected[]")).size();
   }
 
