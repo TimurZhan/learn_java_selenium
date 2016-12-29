@@ -38,8 +38,32 @@ public class ContactHelper extends HelperBase  {
     }
   }
 
+  public ContactData InfoFromEditFrom(ContactData contact) {
+    initContactModificationById(contact.getId());
+    String firstname = wd.findElement(By.name("firstname")).getAttribute("value");
+    String lastname = wd.findElement(By.name("lastname")).getAttribute("value");
+    String home = wd.findElement(By.name("home")).getAttribute("value");
+    String mobile = wd.findElement(By.name("mobile")).getAttribute("value");
+    String work = wd.findElement(By.name("work")).getAttribute("value");
+    wd.navigate().back();
+    return new ContactData()
+            .withId(contact.getId())
+            .withFirstname(firstname)
+            .withLastname(lastname)
+            .withHomePhoneNumber(home)
+            .withMobilePhoneNumber(mobile)
+            .withWorkPhoneNumber(work);
+  }
+
   public void initContact() {
     click(By.linkText("add new"));
+  }
+
+  public void create(ContactData contact, boolean creation) {
+    initContact();
+    fillContactForm(contact, true); //true означает, что поле для выбора групп, тут должно быть
+    submitContact();
+    contactCashe = null;
   }
 
   public void modify(ContactData contact) {
@@ -72,12 +96,7 @@ public class ContactHelper extends HelperBase  {
     wd.switchTo().alert().accept();
   }
 
-  public void create(ContactData contact, boolean creation) {
-    initContact();
-    fillContactForm(contact, true); //true означает, что поле для выбора групп, тут должно быть
-    submitContact();
-    contactCashe = null;
-  }
+
 
   public boolean isThereAContact() {
     return isElementPresent(By.cssSelector("img[title='Edit']"));
@@ -108,21 +127,4 @@ public class ContactHelper extends HelperBase  {
     }
     return new Contacts(contactCashe);
   }
-
-  /**
-  public Contacts all() {
-    Contacts contacts = new Contacts();
-    List<WebElement> elements = wd.findElements(By.cssSelector("tr[name='entry']"));//Получаем список объектов типа element по тегу tr, у которого параметр name.
-    for (WebElement element : elements){//Инициализируем цикл по перебору массива полученных элементов.
-      List<WebElement> cells = element.findElements(By.tagName("td"));//Так как имя и фамилия пользователя - это текст отдельных ячеек строки, строку разбиваем на ячейки
-      String lastname = cells.get(1).getText();//Получаем от элемента его текст, который идет в переменную lastname
-      String firstname = cells.get(2).getText();//Получаем от элемента его текст, который идет в переменную firstname
-      //Получаем элемент input, у которого получаем аттрибут id, и сохраняем это все в переменную id. Метод Integer.parseInt преобразует строку в число.
-      int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
-      //Создаем и добавляем объект типа ContactData с именем contact, который будет использоваться для добавления в список
-      contacts.add(new ContactData().withId(id).withFirstname(firstname).withLastname(lastname));
-    }
-    return new Contacts(contacts);
-  }*/
-
 }
