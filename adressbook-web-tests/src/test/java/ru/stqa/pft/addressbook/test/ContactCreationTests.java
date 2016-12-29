@@ -23,9 +23,7 @@ public class ContactCreationTests extends TestBase {
             .withEmail("test1test3test2@mail.ru")
             .withAddress2("Test address 2")
             .withGroup("Тест 2222");
-    app.contact().initContact();
-    app.contact().fillContactForm(contact, true);
-    app.contact().submitContact();
+    app.contact().create(contact, true);
     app.goTo().homePage();
     Contacts after = app.contact().all();//Тут происходит подсчет количества контактов (элементов в списке) ПОСЛЕ создания контакта.
     assertThat(after.size(), equalTo(before.size() + 1));//Тут реализована проверка количества элементов (размер списка контактов), до и после. Необходимо, чтобы значения совпадали.

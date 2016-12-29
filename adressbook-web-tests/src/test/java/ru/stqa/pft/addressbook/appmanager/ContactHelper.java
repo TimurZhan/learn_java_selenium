@@ -46,6 +46,7 @@ public class ContactHelper extends HelperBase  {
     initContactModificationById(contact.getId());
     fillContactForm(contact, false); //false означает, что поле для выбора групп, тут НЕ должно быть
     submitContactModification();
+    contactCashe = null;
   }
 
   public void initContactModificationById(int id) {
@@ -59,6 +60,7 @@ public class ContactHelper extends HelperBase  {
   public void delete(ContactData deletedContact) {
     selectToDeleteContactById(deletedContact.getId());
     deleteContact();
+    contactCashe = null;
   }
 
   public void selectToDeleteContactById(int id) {
@@ -74,6 +76,7 @@ public class ContactHelper extends HelperBase  {
     initContact();
     fillContactForm(contact, true); //true означает, что поле для выбора групп, тут должно быть
     submitContact();
+    contactCashe = null;
   }
 
   public boolean isThereAContact() {
@@ -85,7 +88,28 @@ public class ContactHelper extends HelperBase  {
     return wd.findElements(By.name("selected[]")).size();
   }
 
+  private Contacts contactCashe = null;
+
   //Создан отдельный метод подсчитывающий количество контактов, как объектов в списке
+  public Contacts all() {
+    if (contactCashe != null){
+      return new Contacts(contactCashe);
+    }
+    contactCashe = new Contacts();
+    List<WebElement> elements = wd.findElements(By.cssSelector("tr[name='entry']"));//Получаем список объектов типа element по тегу tr, у которого параметр name.
+    for (WebElement element : elements){//Инициализируем цикл по перебору массива полученных элементов.
+      List<WebElement> cells = element.findElements(By.tagName("td"));//Так как имя и фамилия пользователя - это текст отдельных ячеек строки, строку разбиваем на ячейки
+      String lastname = cells.get(1).getText();//Получаем от элемента его текст, который идет в переменную lastname
+      String firstname = cells.get(2).getText();//Получаем от элемента его текст, который идет в переменную firstname
+      //Получаем элемент input, у которого получаем аттрибут id, и сохраняем это все в переменную id. Метод Integer.parseInt преобразует строку в число.
+      int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
+      //Создаем и добавляем объект типа ContactData с именем contact, который будет использоваться для добавления в список
+      contactCashe.add(new ContactData().withId(id).withFirstname(firstname).withLastname(lastname));
+    }
+    return new Contacts(contactCashe);
+  }
+
+  /**
   public Contacts all() {
     Contacts contacts = new Contacts();
     List<WebElement> elements = wd.findElements(By.cssSelector("tr[name='entry']"));//Получаем список объектов типа element по тегу tr, у которого параметр name.
@@ -98,6 +122,7 @@ public class ContactHelper extends HelperBase  {
       //Создаем и добавляем объект типа ContactData с именем contact, который будет использоваться для добавления в список
       contacts.add(new ContactData().withId(id).withFirstname(firstname).withLastname(lastname));
     }
-    return contacts;
-  }
+    return new Contacts(contacts);
+  }*/
+
 }
