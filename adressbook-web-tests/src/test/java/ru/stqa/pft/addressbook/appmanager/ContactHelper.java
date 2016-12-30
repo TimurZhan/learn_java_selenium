@@ -120,7 +120,7 @@ public class ContactHelper extends HelperBase  {
       List<WebElement> cells = element.findElements(By.tagName("td"));//Так как имя и фамилия пользователя - это текст отдельных ячеек строки, строку разбиваем на ячейки
       String lastname = cells.get(1).getText();//Получаем от элемента его текст, который идет в переменную lastname
       String firstname = cells.get(2).getText();//Получаем от элемента его текст, который идет в переменную firstname
-      String[] phones = cells.get(5).getText().split("\n");//Тут получаем текст из 6 яйчейки (где телефоны). А затем, при помощи метода "split" режем этот тест на отдельные яйчейки.
+      String allPhones = cells.get(5).getText();//Тут получаем текст из 6 яйчейки (где телефоны). А затем, при помощи метода "split" режем этот тест на отдельные яйчейки.
       //Получаем элемент input, у которого получаем аттрибут id, и сохраняем это все в переменную id. Метод Integer.parseInt преобразует строку в число.
       int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
       //Создаем и добавляем объект типа ContactData с именем contact, который будет использоваться для добавления в список
@@ -128,9 +128,7 @@ public class ContactHelper extends HelperBase  {
               .withId(id)
               .withFirstname(firstname)
               .withLastname(lastname)
-              .withHomePhoneNumber(phones[0])
-              .withMobilePhoneNumber(phones[1])
-              .withWorkPhoneNumber(phones[2]));
+              .withAllPhones(allPhones));
     }
     return new Contacts(contactCashe);
   }
