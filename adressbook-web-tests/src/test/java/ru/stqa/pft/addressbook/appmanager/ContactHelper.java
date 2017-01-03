@@ -30,6 +30,8 @@ public class ContactHelper extends HelperBase  {
     type(By.name("address"), contactData.getAddress1());
     type(By.name("mobile"), contactData.getMobilePhoneNumber());
     type(By.name("email"), contactData.getEmail());
+    type(By.name("email2"), contactData.getEmail2());
+    type(By.name("email3"), contactData.getEmail3());
     type(By.name("address2"), contactData.getAddress2());
     if (creation) { //Если это форма создания контакта, то элемент выбора групп должен быть
       new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup()); //
@@ -42,17 +44,26 @@ public class ContactHelper extends HelperBase  {
     initContactModificationById(contact.getId());
     String firstname = wd.findElement(By.name("firstname")).getAttribute("value");
     String lastname = wd.findElement(By.name("lastname")).getAttribute("value");
+    String address1 = wd.findElement(By.xpath(".//textarea[@name='address']")).getText();
     String home = wd.findElement(By.name("home")).getAttribute("value");
     String mobile = wd.findElement(By.name("mobile")).getAttribute("value");
     String work = wd.findElement(By.name("work")).getAttribute("value");
+    String Email1 = wd.findElement(By.name("email")).getAttribute("value");
+    String Email2 = wd.findElement(By.name("email2")).getAttribute("value");
+    String Email3 = wd.findElement(By.name("email3")).getAttribute("value");
     wd.navigate().back();
     return new ContactData()
             .withId(contact.getId())
             .withFirstname(firstname)
             .withLastname(lastname)
+            .withAddress1(address1)
             .withHomePhoneNumber(home)
             .withMobilePhoneNumber(mobile)
-            .withWorkPhoneNumber(work);
+            .withWorkPhoneNumber(work)
+            .withEmail(Email1)
+            .withEmail2(Email2)
+            .withEmail3(Email3);
+
   }
 
   public void initContact() {
@@ -96,8 +107,6 @@ public class ContactHelper extends HelperBase  {
     wd.switchTo().alert().accept();
   }
 
-
-
   public boolean isThereAContact() {
     return isElementPresent(By.cssSelector("img[title='Edit']"));
   }
@@ -120,6 +129,8 @@ public class ContactHelper extends HelperBase  {
       List<WebElement> cells = element.findElements(By.tagName("td"));//Так как имя и фамилия пользователя - это текст отдельных ячеек строки, строку разбиваем на ячейки
       String lastname = cells.get(1).getText();//Получаем от элемента его текст, который идет в переменную lastname
       String firstname = cells.get(2).getText();//Получаем от элемента его текст, который идет в переменную firstname
+      String address = cells.get(3).getText();
+      String allEmail = cells.get(4).getText();
       String allPhones = cells.get(5).getText();//Тут получаем текст из 6 яйчейки (где телефоны). А затем, при помощи метода "split" режем этот тест на отдельные яйчейки.
       //Получаем элемент input, у которого получаем аттрибут id, и сохраняем это все в переменную id. Метод Integer.parseInt преобразует строку в число.
       int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
@@ -128,6 +139,8 @@ public class ContactHelper extends HelperBase  {
               .withId(id)
               .withFirstname(firstname)
               .withLastname(lastname)
+              .withAddress1(address)
+              .withAllEmail(allEmail)
               .withAllPhones(allPhones));
     }
     return new Contacts(contactCashe);
