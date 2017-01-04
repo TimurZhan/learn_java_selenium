@@ -10,6 +10,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
  * Создан базовый класс для помошников
  */
 public class HelperBase {
+
   protected WebDriver wd;
 
   public HelperBase(WebDriver wd) {
