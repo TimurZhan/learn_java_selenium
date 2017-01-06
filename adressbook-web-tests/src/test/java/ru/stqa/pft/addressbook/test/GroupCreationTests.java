@@ -1,5 +1,8 @@
 package ru.stqa.pft.addressbook.test;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.thoughtworks.xstream.XStream;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.GroupData;
@@ -10,6 +13,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.equalTo;//Импорт отдельного метода (equalTo) из класса CoreMatchers билбиотеки hamcrest.
 import static org.hamcrest.MatcherAssert.assertThat;//Импорт отдельного метода (assertThat) из класса MatcherAssert билбиотеки hamcrest.
@@ -18,19 +23,38 @@ public class GroupCreationTests extends TestBase { //Создан базовый
 
   //Провайдер тестовых данных. Это спец метод, нужный для цикличного создания тестов (В данном случаеи будет последовательно произведено 3 теста подряд).
   @DataProvider
-  public Iterator<Object[]> validGroups() throws IOException { //Итератор массива объектов
-    List<Object[]> list = new ArrayList<Object[]>(); //Тут создаем список объектов, который будет перебираться при созаднии тестов
-    BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/groups.csv"))); //Добавляем тест.данные из внешнего файла
+  public Iterator<Object[]> validGroupsFromXml() throws IOException { //Итератор массива объектов
+    BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/groups.xml"))); //Добавляем тест.данные из внешнего файла
+    String xml = "";
     String line =  reader.readLine(); //Читаем вытащенные тест.данные из файла (читается одна сточка).
     while (line != null){ //В цикле читаем каждую строчку файла до тех пор, пока они не закончатся.
-      String[] split = line.split(";"); //Разделяем на отдельные куски, каждую строчку, при помощи метода split.
-      list.add(new Object[]{new GroupData().withName(split[0]).withHeader(split[1]).withFooter(split[2])}); //Выстраиваем из полученных кусков объект, затем добавляем его в список.
+      xml += line;
       line = reader.readLine();
     }
-    return list.iterator();
+    XStream xstream = new XStream();
+    xstream.processAnnotations(GroupData.class);//Тут обрабатываем аннотации, которые находятся в классе GroupData
+    List<GroupData> groups = (List<GroupData>) xstream.fromXML(xml);//Тут коллекцию объектов GroupData из файла XML превращаем в список
+    //Тут список объектов превращаем в поток, потом превращаем обратно в список для их итерации
+    return groups.stream().map((g) -> new Object[]{g}).collect(Collectors.toList()).iterator();
   }
 
-  @Test(dataProvider = "validGroups") //Привязываем тестовый провайдер к тесту.
+  //Провайдер тестовых данных. Это спец метод, нужный для цикличного создания тестов (В данном случаеи будет последовательно произведено 3 теста подряд).
+  @DataProvider
+  public Iterator<Object[]> validGroupsFromJson() throws IOException { //Итератор массива объектов
+    BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/groups.json"))); //Добавляем тест.данные из внешнего файла
+    String json = "";
+    String line =  reader.readLine(); //Читаем вытащенные тест.данные из файла (читается одна сточка).
+    while (line != null){ //В цикле читаем каждую строчку файла до тех пор, пока они не закончатся.
+      json += line;
+      line = reader.readLine();
+    }
+    Gson gson = new Gson();
+    List<GroupData> groups = gson.fromJson(json, new TypeToken<List<GroupData>>(){}.getType());
+    //Тут список объектов превращаем в поток, потом превращаем обратно в список для их итерации
+    return groups.stream().map((g) -> new Object[]{g}).collect(Collectors.toList()).iterator();
+  }
+
+  @Test(dataProvider = "validGroupsFromJson") //Привязываем тестовый провайдер к тесту.
   public void testGroupCreation(GroupData group) { //В скобках, в качестве параметра, передается массив объектов, который берет тестовые данные из провайдера.
     //Тут каждый шаг теста выделен в отдельный вспомогательный метод
     app.goTo().groupPage();

@@ -1,30 +1,19 @@
 package ru.stqa.pft.addressbook.model;
 
+import com.google.gson.annotations.Expose;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
+
+@XStreamAlias("group") //Тут указывает то, как будет называться каждый объект в файле groups.xml
 public class GroupData {
-  private int id = Integer.MAX_VALUE;;
+  @XStreamOmitField //В данной аннотации указывем то, что id не будет отображаться в файле groups.xml
+  private int id = Integer.MAX_VALUE;
+  @Expose //В данной аннотации указывем то, что id не будет отображаться в файле groups.json, а будет отображаться данная строчка.
   private String name;
+  @Expose //В данной аннотации указывем то, что id не будет отображаться в файле groups.json, а будет отображаться данная строчка.
   private String header;
+  @Expose //В данной аннотации указывем то, что id не будет отображаться в файле groups.json, а будет отображаться данная строчка.
   private String footer;
-
-  /** КОНСТРУКТОР УДАЛЕН при модификации данного объекта.
-   Создан конструктор, который НЕ принимает ID в качестве параметра.
-   Будет использоваться в случае, если в тестах будет использоваться данный объект без id.
-  public GroupData(String name, String header, String footer) {
-    this.id = Integer.MAX_VALUE;//Дефолтное значение для ID будет самое большое целое число (нужно для того, чтобы создаваемая группа оказалась последней при сортировке).
-    this.name = name;
-    this.header = header;
-    this.footer = footer;
-  }
-
-
-  /** КОНСТРУКТОР УДАЛЕН при модификации данного объекта.
-  public GroupData(int id, String name, String header, String footer) {
-    this.id = id;
-    this.name = name;
-    this.header = header;
-    this.footer = footer;
-  }
-  */
 
   public GroupData withId(int id) {
     this.id = id;

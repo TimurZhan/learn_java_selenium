@@ -3,7 +3,11 @@ package ru.stqa.pft.addressbook.generators;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.thoughtworks.xstream.XStream;
 import ru.stqa.pft.addressbook.model.GroupData;
+import ru.stqa.pft.addressbook.model.Groups;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -25,6 +29,10 @@ public class GroupDataGenerator {
   @Parameter(names = "-f", description = "Target file")
   public String file;
 
+  //Создан атрибут для создания опции командной строки, под названием "-d"
+  @Parameter(names = "-d", description = "Data format")
+  public String format;
+
   //Данная функция, в качестве параметра, принимает массив строк (кол-во групп и путь к файлу).
   public static void main(String[] args) throws IOException {
     GroupDataGenerator generator = new GroupDataGenerator();//Создан объект текущего класса
@@ -43,11 +51,39 @@ public class GroupDataGenerator {
 
   private void run() throws IOException {
     List<GroupData> groups = generateGroups(count); //Генератор тестовых данных
-    save(groups, new File(file)); //Сохранение тесовых данных в файл
+    if (format.equals("csv")){
+      saveAsCsv(groups, new File(file)); //Сохранение тесовых данных в файл, в формате csv
+    }  else if (format.equals("xml")){
+      saveAsXml(groups, new File(file)); //Сохранение тесовых данных в файл в формате xml
+    } else if (format.equals("json")){
+      saveAsJson(groups, new File(file)); //Сохранение тесовых данных в файл в формате xml
+    } else {
+      System.out.println("Не известный формат " + format);
+    }
+  }
+
+  //Реализован метод для преобразования тестовых данных объекта GroupData в файл формата JSON.
+  private void saveAsJson(List<GroupData> groups, File file) throws IOException {
+    Gson gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
+    String json = gson.toJson(groups);
+    Writer writer = new FileWriter(file); //Открывает файл для записи, в него, тестовых данных
+    writer.write(json);
+    writer.close(); //Файл закрывается после записи.
+
+  }
+
+  //Реализован метод для преобразования тестовых данных объекта GroupData в файл формата XML.
+  private void saveAsXml(List<GroupData> groups, File file) throws IOException {
+    XStream xstream = new XStream();
+    xstream.processAnnotations(GroupData.class); //Настройка для файла XML. Тут указываем то, как будет называться тег. Его название берется из класса GroupData
+    String xml = xstream.toXML(groups); //Тут преобразовываем объект в строчку, которая будет содержаться в файле XML.
+    Writer writer = new FileWriter(file); //Открывает файл для записи, в него, тестовых данных
+    writer.write(xml);
+    writer.close(); //Файл закрывается после записи.
   }
 
   //"throws IOException" означает, что если возникнет исключение, оно будет передано выше другому мотоду (в частности main)
-  private void save(List<GroupData> groups, File file) throws IOException {
+  private void saveAsCsv(List<GroupData> groups, File file) throws IOException {
     Writer writer = new FileWriter(file);//Открывает файл для записи, в него, тестовых данных
     for (GroupData groups1 : groups){//Проходимся по всем группам в списке.
       //Записываем в файл каждую группу по очередно. Где Name, Header, Footer (данные группы) ставится вместо %s
