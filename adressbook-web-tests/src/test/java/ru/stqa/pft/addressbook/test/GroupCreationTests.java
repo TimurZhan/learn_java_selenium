@@ -6,6 +6,7 @@ import ru.stqa.pft.addressbook.model.GroupData;
 import ru.stqa.pft.addressbook.model.Groups;
 
 //Статический импорт
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -17,11 +18,15 @@ public class GroupCreationTests extends TestBase { //Создан базовый
 
   //Провайдер тестовых данных. Это спец метод, нужный для цикличного создания тестов (В данном случаеи будет последовательно произведено 3 теста подряд).
   @DataProvider
-  public Iterator<Object[]> validGroups(){ //Итератор массива объектов
+  public Iterator<Object[]> validGroups() throws IOException { //Итератор массива объектов
     List<Object[]> list = new ArrayList<Object[]>(); //Тут создаем список объектов, который будет перебираться при созаднии тестов
-    list.add(new Object[]{new GroupData().withName("test1").withFooter("header 1").withHeader("footer 1")});
-    list.add(new Object[]{new GroupData().withName("test2").withFooter("header 2").withHeader("footer 2")});
-    list.add(new Object[]{new GroupData().withName("test3").withFooter("header 3").withHeader("footer 3")});
+    BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/groups.csv"))); //Добавляем тест.данные из внешнего файла
+    String line =  reader.readLine(); //Читаем вытащенные тест.данные из файла (читается одна сточка).
+    while (line != null){ //В цикле читаем каждую строчку файла до тех пор, пока они не закончатся.
+      String[] split = line.split(";"); //Разделяем на отдельные куски, каждую строчку, при помощи метода split.
+      list.add(new Object[]{new GroupData().withName(split[0]).withHeader(split[1]).withFooter(split[2])}); //Выстраиваем из полученных кусков объект, затем добавляем его в список.
+      line = reader.readLine();
+    }
     return list.iterator();
   }
 
