@@ -6,6 +6,8 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
+import java.io.File;
+
 /**
  * Создан базовый класс для помошников
  */
@@ -21,7 +23,6 @@ public class HelperBase {
  * Но этот метод можно использовать и в других классах
  */
   protected void click(By locator) {
-
     wd.findElement(locator).click();
   }
 
@@ -38,9 +39,15 @@ public class HelperBase {
     if (text != null) {
       String exsistingText = wd.findElement(locator).getAttribute("value"); //Извлечение значения из поля, в котором оно хранится.
       if (! text.equals(exsistingText)) { //Если не верно, что текст совпадает с уже существующим текстом, тогда необходимо совершить действия приведенные в теле кода.
-        //wd.findElement(locator).clear();
         wd.findElement(locator).sendKeys(text);
       }
+    }
+  }
+
+  protected void attach(By locator, File file) {
+    clear(locator);
+    if (file != null) {
+        wd.findElement(locator).sendKeys(file.getAbsolutePath());//В метод sendKeys передается абсолютный путь к файлу: file.getAbsolutePath()
     }
   }
 

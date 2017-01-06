@@ -10,7 +10,7 @@ import ru.stqa.pft.addressbook.model.Contacts;
 
 import java.util.List;
 
-public class ContactHelper extends HelperBase  {
+public class ContactHelper extends HelperBase {
 
   public ContactHelper(WebDriver wd) {
     super(wd);
@@ -31,8 +31,11 @@ public class ContactHelper extends HelperBase  {
     type(By.name("email2"), contactData.getEmail2());
     type(By.name("email3"), contactData.getEmail3());
     type(By.name("address2"), contactData.getAddress2());
+    attach(By.name("photo"), contactData.getPhoto());//Метод getAbsolutePath преобразует данные в строку. При этом он содержит абослютный путь к файлу.
     if (creation) { //Если это форма создания контакта, то элемент выбора групп должен быть
-      new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup()); //
+      if (contactData.getGroup() != null) {
+        new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup()); //
+      }
     } else {//Если это форма модификации контакта, то элемент выбора групп тут НЕ должен быть
       Assert.assertFalse(isElementPresent(By.name("new_group")));
     }
@@ -127,12 +130,12 @@ public class ContactHelper extends HelperBase  {
 
   //Создан отдельный метод подсчитывающий количество контактов, как объектов в списке
   public Contacts all() {
-    if (contactCashe != null){
+    if (contactCashe != null) {
       return new Contacts(contactCashe);
     }
     contactCashe = new Contacts();
     List<WebElement> elements = wd.findElements(By.cssSelector("tr[name='entry']"));//Получаем список объектов типа element по тегу tr, у которого параметр name.
-    for (WebElement element : elements){//Инициализируем цикл по перебору массива полученных элементов.
+    for (WebElement element : elements) {//Инициализируем цикл по перебору массива полученных элементов.
       List<WebElement> cells = element.findElements(By.tagName("td"));//Так как имя и фамилия пользователя - это текст отдельных ячеек строки, строку разбиваем на ячейки
       String lastname = cells.get(1).getText();//Получаем от элемента его текст, который идет в переменную lastname
       String firstname = cells.get(2).getText();//Получаем от элемента его текст, который идет в переменную firstname
