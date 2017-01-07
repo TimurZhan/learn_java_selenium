@@ -40,17 +40,13 @@ public class ContactData {
   private String address2;
   @Expose//В данной аннотации указывем то, что id не будет отображаться в файле contacts.json, а будет отображаться данная строчка.
   private String group;
-
-  public File getPhoto() {
-    return photo;
-  }
+  @Expose//В данной аннотации указывем то, что id не будет отображаться в файле contacts.json, а будет отображаться данная строчка.
+  private File photo;
 
   public ContactData withPhoto(File photo) {
     this.photo = photo;
     return this;
   }
-
-  private File photo;
 
   public ContactData withId(int id) {
     this.id = id;
@@ -131,6 +127,11 @@ public class ContactData {
     this.group = group;
     return this;
   }
+
+  public File getPhoto() {
+    return photo;
+  }
+
 
   public int getId() {
     return id;

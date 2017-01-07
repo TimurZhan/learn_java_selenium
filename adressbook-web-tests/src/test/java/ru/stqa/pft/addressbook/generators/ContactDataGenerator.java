@@ -5,6 +5,7 @@ import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.thoughtworks.xstream.XStream;
 import ru.stqa.pft.addressbook.model.ContactData;
 
 import java.io.File;
@@ -51,6 +52,8 @@ public class ContactDataGenerator {
     List<ContactData> contacts = generateContacts(count); //Генератор тестовых данных
     if (format.equals("json")){
       saveAsJson(contacts, new File(file)); //Сохранение тесовых данных в файл в формате xml
+    } else if (format.equals("xml")){
+      saveAsXml(contacts, new File(file)); //Сохранение тесовых данных в файл в формате xml
     } else {
       System.out.println("Неизвестный формат " + format);
     }
@@ -66,16 +69,28 @@ public class ContactDataGenerator {
 
   }
 
+  //Реализован метод для преобразования тестовых данных объекта ContactData в файл формата XML.
+  private void saveAsXml(List<ContactData> contacts, File file) throws IOException {
+    XStream xstream = new XStream();
+    xstream.processAnnotations(ContactData.class); //Настройка для файла XML. Тут указываем то, как будет называться тег. Его название берется из класса ContactData
+    String xml = xstream.toXML(contacts); //Тут преобразовываем объект в строчку, которая будет содержаться в файле XML.
+    Writer writer = new FileWriter(file); //Открывает файл для записи, в него, тестовых данных
+    writer.write(xml);
+    writer.close(); //Файл закрывается после записи.
+  }
+
   private List<ContactData> generateContacts(int count) {
     List<ContactData> contacts2 = new ArrayList<ContactData>();
     for (int i = 0; i < count; i++){
+      //File photo = new File("src/test/resources/rt.jpg");
       contacts2.add(
               new ContactData()
                       .withFirstname(String.format("Firstname %s", i))
                       .withLastname(String.format("Lastname %s", i))
                       .withAddress1(String.format("Address1 %s", i))
-                      .withMobilePhoneNumber(String.format("8900045001 %s", i))
-                      .withEmail(String.format("test1test3test2@mail.ru %s", i))
+                      .withMobilePhoneNumber(String.format("8900045001", i))
+                      .withEmail(String.format("test1test3test2@mail.ru", i))
+                      .withPhoto(new File("src/test/resources/rt.jpg"))
       );
     }
     return contacts2;

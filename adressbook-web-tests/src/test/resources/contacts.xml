@@ -1,0 +1,26 @@
+<list>
+  <contact>
+    <firstname>Firstname 0</firstname>
+    <lastname>Lastname 0</lastname>
+    <address1>Address1 0</address1>
+    <mobilePhoneNumber>8900045001</mobilePhoneNumber>
+    <email>test1test3test2@mail.ru</email>
+    <photo>src\test\resources\rt.jpg</photo>
+  </contact>
+  <contact>
+    <firstname>Firstname 1</firstname>
+    <lastname>Lastname 1</lastname>
+    <address1>Address1 1</address1>
+    <mobilePhoneNumber>8900045001</mobilePhoneNumber>
+    <email>test1test3test2@mail.ru</email>
+    <photo>src\test\resources\rt.jpg</photo>
+  </contact>
+  <contact>
+    <firstname>Firstname 2</firstname>
+    <lastname>Lastname 2</lastname>
+    <address1>Address1 2</address1>
+    <mobilePhoneNumber>8900045001</mobilePhoneNumber>
+    <email>test1test3test2@mail.ru</email>
+    <photo>src\test\resources\rt.jpg</photo>
+  </contact>
+</list>
