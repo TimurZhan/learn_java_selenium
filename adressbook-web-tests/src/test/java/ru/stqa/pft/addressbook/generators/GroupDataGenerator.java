@@ -65,10 +65,9 @@ public class GroupDataGenerator {
   private void saveAsJson(List<GroupData> groups, File file) throws IOException {
     Gson gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
     String json = gson.toJson(groups);
-    Writer writer = new FileWriter(file); //Открывает файл для записи, в него, тестовых данных
-    writer.write(json);
-    writer.close(); //Файл закрывается после записи.
-
+    try (Writer writer = new FileWriter(file)) { // "Writer writer" Открывает файл для записи, в него, тестовых данных. А try автоматически закрывет writer после его использования
+      writer.write(json);
+    }
   }
 
   //Реализован метод для преобразования тестовых данных объекта GroupData в файл формата XML.
@@ -76,19 +75,19 @@ public class GroupDataGenerator {
     XStream xstream = new XStream();
     xstream.processAnnotations(GroupData.class); //Настройка для файла XML. Тут указываем то, как будет называться тег. Его название берется из класса GroupData
     String xml = xstream.toXML(groups); //Тут преобразовываем объект в строчку, которая будет содержаться в файле XML.
-    Writer writer = new FileWriter(file); //Открывает файл для записи, в него, тестовых данных
-    writer.write(xml);
-    writer.close(); //Файл закрывается после записи.
+    try (Writer writer = new FileWriter(file)) { // "Writer writer" Открывает файл для записи, в него, тестовых данных. А try автоматически закрывет writer после его использования
+      writer.write(xml);
+    }
   }
 
   //"throws IOException" означает, что если возникнет исключение, оно будет передано выше другому мотоду (в частности main)
   private void saveAsCsv(List<GroupData> groups, File file) throws IOException {
-    Writer writer = new FileWriter(file);//Открывает файл для записи, в него, тестовых данных
-    for (GroupData groups1 : groups){//Проходимся по всем группам в списке.
-      //Записываем в файл каждую группу по очередно. Где Name, Header, Footer (данные группы) ставится вместо %s
-      writer.write(String.format("%s;%s;%s\n", groups1.getName(), groups1.getHeader(), groups1.getFooter()));
+    try (Writer writer = new FileWriter(file)) {//Открывает файл для записи, в него, тестовых данных)
+      for (GroupData groups1 : groups){//Проходимся по всем группам в списке.
+        //Записываем в файл каждую группу по очередно. Где Name, Header, Footer (данные группы) ставится вместо %s
+        writer.write(String.format("%s;%s;%s\n", groups1.getName(), groups1.getHeader(), groups1.getFooter()));
+      }
     }
-    writer.close();//Файл закрывается после записи.
   }
 
   private List<GroupData> generateGroups(int count) {

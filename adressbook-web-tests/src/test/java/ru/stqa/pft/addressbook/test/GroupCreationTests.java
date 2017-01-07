@@ -24,34 +24,36 @@ public class GroupCreationTests extends TestBase { //Создан базовый
   //Провайдер тестовых данных. Это спец метод, нужный для цикличного создания тестов (В данном случаеи будет последовательно произведено 3 теста подряд).
   @DataProvider
   public Iterator<Object[]> validGroupsFromXml() throws IOException { //Итератор массива объектов
-    BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/groups.xml"))); //Добавляем тест.данные из внешнего файла
-    String xml = "";
-    String line =  reader.readLine(); //Читаем вытащенные тест.данные из файла (читается одна сточка).
-    while (line != null){ //В цикле читаем каждую строчку файла до тех пор, пока они не закончатся.
-      xml += line;
-      line = reader.readLine();
+    try (BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/groups.xml")))) { //Добавляем тест.данные из внешнего файла
+      String xml = "";
+      String line =  reader.readLine(); //Читаем вытащенные тест.данные из файла (читается одна сточка).
+      while (line != null){ //В цикле читаем каждую строчку файла до тех пор, пока они не закончатся.
+        xml += line;
+        line = reader.readLine();
+      }
+      XStream xstream = new XStream();
+      xstream.processAnnotations(GroupData.class);//Тут обрабатываем аннотации, которые находятся в классе GroupData
+      List<GroupData> groups = (List<GroupData>) xstream.fromXML(xml);//Тут коллекцию объектов GroupData из файла XML превращаем в список
+      //Тут список объектов превращаем в поток, потом превращаем обратно в список для их итерации
+      return groups.stream().map((g) -> new Object[]{g}).collect(Collectors.toList()).iterator();
     }
-    XStream xstream = new XStream();
-    xstream.processAnnotations(GroupData.class);//Тут обрабатываем аннотации, которые находятся в классе GroupData
-    List<GroupData> groups = (List<GroupData>) xstream.fromXML(xml);//Тут коллекцию объектов GroupData из файла XML превращаем в список
-    //Тут список объектов превращаем в поток, потом превращаем обратно в список для их итерации
-    return groups.stream().map((g) -> new Object[]{g}).collect(Collectors.toList()).iterator();
   }
 
   //Провайдер тестовых данных. Это спец метод, нужный для цикличного создания тестов (В данном случаеи будет последовательно произведено 3 теста подряд).
   @DataProvider
   public Iterator<Object[]> validGroupsFromJson() throws IOException { //Итератор массива объектов
-    BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/groups.json"))); //Добавляем тест.данные из внешнего файла
-    String json = "";
-    String line =  reader.readLine(); //Читаем вытащенные тест.данные из файла (читается одна сточка).
-    while (line != null){ //В цикле читаем каждую строчку файла до тех пор, пока они не закончатся.
-      json += line;
-      line = reader.readLine();
+    try (BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/groups.json")))) { //Добавляем тест.данные из внешнего файла
+      String json = "";
+      String line =  reader.readLine(); //Читаем вытащенные тест.данные из файла (читается одна сточка).
+      while (line != null){ //В цикле читаем каждую строчку файла до тех пор, пока они не закончатся.
+        json += line;
+        line = reader.readLine();
+      }
+      Gson gson = new Gson();
+      List<GroupData> groups = gson.fromJson(json, new TypeToken<List<GroupData>>(){}.getType());
+      //Тут список объектов превращаем в поток, потом превращаем обратно в список для их итерации
+      return groups.stream().map((g) -> new Object[]{g}).collect(Collectors.toList()).iterator();
     }
-    Gson gson = new Gson();
-    List<GroupData> groups = gson.fromJson(json, new TypeToken<List<GroupData>>(){}.getType());
-    //Тут список объектов превращаем в поток, потом превращаем обратно в список для их итерации
-    return groups.stream().map((g) -> new Object[]{g}).collect(Collectors.toList()).iterator();
   }
 
   @Test(dataProvider = "validGroupsFromJson") //Привязываем тестовый провайдер к тесту.
@@ -73,8 +75,6 @@ public class GroupCreationTests extends TestBase { //Создан базовый
      * Метод max() сравнивает ID групп из множества after, а затем берет самый максимальный ID из них. Метод getAsInt() преобразует результат в целое число.
      */
     assertThat(after, equalTo(before.withAdded(group.withId(after.stream().mapToInt((g)-> g.getId()).max().getAsInt()))));
-
-    //app.getSessionHelper().logoutProgram();
   }
 
   @Test //Негативный тест. Проверяет что группа НЕ создалась.

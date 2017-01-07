@@ -22,34 +22,36 @@ public class ContactCreationTests extends TestBase {
   //Провайдер тестовых данных. Это спец метод, нужный для цикличного создания тестов (В данном случаеи будет последовательно произведено 3 теста подряд).
   @DataProvider
   public Iterator<Object[]> validContactsFromJson() throws IOException { //Итератор массива объектов
-    BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/contacts.json"))); //Добавляем тест.данные из внешнего файла
-    String json = "";
-    String line =  reader.readLine(); //Читаем вытащенные тест.данные из файла (читается одна сточка).
-    while (line != null){ //В цикле читаем каждую строчку файла до тех пор, пока они не закончатся.
-      json += line;
-      line = reader.readLine();
+    try (BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/contacts.json")))){ //Добавляем тест.данные из внешнего файла
+      String json = "";
+      String line =  reader.readLine(); //Читаем вытащенные тест.данные из файла (читается одна сточка).
+      while (line != null){ //В цикле читаем каждую строчку файла до тех пор, пока они не закончатся.
+        json += line;
+        line = reader.readLine();
+      }
+      Gson gson = new Gson();
+      List<ContactData> contacts = gson.fromJson(json, new TypeToken<List<ContactData>>(){}.getType());
+      //Тут список объектов превращаем в поток, потом превращаем обратно в список для их итерации
+      return contacts.stream().map((g) -> new Object[]{g}).collect(Collectors.toList()).iterator();
     }
-    Gson gson = new Gson();
-    List<ContactData> contacts = gson.fromJson(json, new TypeToken<List<ContactData>>(){}.getType());
-    //Тут список объектов превращаем в поток, потом превращаем обратно в список для их итерации
-    return contacts.stream().map((g) -> new Object[]{g}).collect(Collectors.toList()).iterator();
   }
 
   //Провайдер тестовых данных. Это спец метод, нужный для цикличного создания тестов (В данном случаеи будет последовательно произведено 3 теста подряд).
   @DataProvider
   public Iterator<Object[]> validContactsFromXml() throws IOException { //Итератор массива объектов
-    BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/contacts.xml"))); //Добавляем тест.данные из внешнего файла
-    String xml = "";
-    String line =  reader.readLine(); //Читаем вытащенные тест.данные из файла (читается одна сточка).
-    while (line != null){ //В цикле читаем каждую строчку файла до тех пор, пока они не закончатся.
-      xml += line;
-      line = reader.readLine();
+    try(BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/contacts.xml")))) {  //Добавляем тест.данные из внешнего файла
+      String xml = "";
+      String line =  reader.readLine(); //Читаем вытащенные тест.данные из файла (читается одна сточка).
+      while (line != null){ //В цикле читаем каждую строчку файла до тех пор, пока они не закончатся.
+        xml += line;
+        line = reader.readLine();
+      }
+      XStream xstream = new XStream();
+      xstream.processAnnotations(ContactData.class);//Тут обрабатываем аннотации, которые находятся в классе ContactData
+      List<ContactData> contacts = (List<ContactData>) xstream.fromXML(xml);//Тут коллекцию объектов ContactData из файла XML превращаем в список
+      //Тут список объектов превращаем в поток, потом превращаем обратно в список для их итерации
+      return contacts.stream().map((g) -> new Object[]{g}).collect(Collectors.toList()).iterator();
     }
-    XStream xstream = new XStream();
-    xstream.processAnnotations(ContactData.class);//Тут обрабатываем аннотации, которые находятся в классе ContactData
-    List<ContactData> contacts = (List<ContactData>) xstream.fromXML(xml);//Тут коллекцию объектов ContactData из файла XML превращаем в список
-    //Тут список объектов превращаем в поток, потом превращаем обратно в список для их итерации
-    return contacts.stream().map((g) -> new Object[]{g}).collect(Collectors.toList()).iterator();
   }
 
   @Test(dataProvider = "validContactsFromXml") //Привязываем тестовый провайдер к тесту.

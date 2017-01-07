@@ -63,9 +63,9 @@ public class ContactDataGenerator {
   private void saveAsJson(List<ContactData> contacts, File file) throws IOException {
     Gson gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
     String json = gson.toJson(contacts);
-    Writer writer = new FileWriter(file); //Открывает файл для записи, в него, тестовых данных
-    writer.write(json);
-    writer.close(); //Файл закрывается после записи.
+    try (Writer writer = new FileWriter(file)) { // "Writer writer" Открывает файл для записи, в него, тестовых данных. А try автоматически закрывет writer после его использования
+      writer.write(json);
+    }
 
   }
 
@@ -74,9 +74,9 @@ public class ContactDataGenerator {
     XStream xstream = new XStream();
     xstream.processAnnotations(ContactData.class); //Настройка для файла XML. Тут указываем то, как будет называться тег. Его название берется из класса ContactData
     String xml = xstream.toXML(contacts); //Тут преобразовываем объект в строчку, которая будет содержаться в файле XML.
-    Writer writer = new FileWriter(file); //Открывает файл для записи, в него, тестовых данных
-    writer.write(xml);
-    writer.close(); //Файл закрывается после записи.
+    try (Writer writer = new FileWriter(file)) { // "Writer writer" Открывает файл для записи, в него, тестовых данных. А try автоматически закрывет writer после его использования
+      writer.write(xml);
+    }
   }
 
   private List<ContactData> generateContacts(int count) {
