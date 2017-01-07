@@ -41,7 +41,7 @@ public class ContactModificationTests extends TestBase {
             .withMiddlename("Tsdfsdfesу2")
             .withLastname("Test3")
             .withCompanyName("Test Company")
-            .withAddress1("Test address")
+            .withAddress1("Testaddress")
             .withMobilePhoneNumber("8900045001")
             .withEmail("test1test3test2@mail.ru")
             .withAddress2("Test address 2")

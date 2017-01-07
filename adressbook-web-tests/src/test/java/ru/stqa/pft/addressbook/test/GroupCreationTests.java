@@ -77,7 +77,7 @@ public class GroupCreationTests extends TestBase { //Создан базовый
     assertThat(after, equalTo(before.withAdded(group.withId(after.stream().mapToInt((g)-> g.getId()).max().getAsInt()))));
   }
 
-  @Test //Негативный тест. Проверяет что группа НЕ создалась.
+  @Test (enabled = false) //Негативный тест. Проверяет что группа НЕ создалась.
   public void testBadGroupCreation() {
     //Тут каждый шаг теста выделен в отдельный вспомогательный метод
     app.goTo().groupPage();

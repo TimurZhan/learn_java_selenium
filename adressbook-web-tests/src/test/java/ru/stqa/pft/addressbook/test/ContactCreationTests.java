@@ -67,7 +67,7 @@ public class ContactCreationTests extends TestBase {
             before.withAdded(contact.withId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt()))));//Cравниваем списки, после их упорядочивания.
   }
 
-  @Test //(enabled = false)
+  @Test (enabled = false)
   public void testBadContactCreationTests() {
     app.goTo().homePage();
     Contacts before = app.contact().all();//Тут происходит подсчет количества контактов(элементов в списке) ДО создания контакта.
