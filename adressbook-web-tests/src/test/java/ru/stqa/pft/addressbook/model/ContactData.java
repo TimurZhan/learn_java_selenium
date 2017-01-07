@@ -1,23 +1,44 @@
 package ru.stqa.pft.addressbook.model;
 
+import com.google.gson.annotations.Expose;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
+
 import java.io.File;
 
+@XStreamAlias("contact") //Тут указывает то, как будет называться каждый объект в файле contacts.xml
 public class ContactData {
+  @XStreamOmitField //В данной аннотации указывем то, что id не будет отображаться в файле contacts.xml
   private int id = Integer.MAX_VALUE;
+  @Expose//В данной аннотации указывем то, что id не будет отображаться в файле contacts.json, а будет отображаться данная строчка.
   private String firstname;
+  @Expose//В данной аннотации указывем то, что id не будет отображаться в файле contacts.json, а будет отображаться данная строчка.
   private String middlename;
+  @Expose//В данной аннотации указывем то, что id не будет отображаться в файле contacts.json, а будет отображаться данная строчка.
   private String lastname;
+  @Expose//В данной аннотации указывем то, что id не будет отображаться в файле contacts.json, а будет отображаться данная строчка.
   private String companyName;
+  @Expose//В данной аннотации указывем то, что id не будет отображаться в файле contacts.json, а будет отображаться данная строчка.
   private String address1;
+  @Expose//В данной аннотации указывем то, что id не будет отображаться в файле contacts.json, а будет отображаться данная строчка.
   private String allPhones;
+  @Expose//В данной аннотации указывем то, что id не будет отображаться в файле contacts.json, а будет отображаться данная строчка.
   private String homePhoneNumber;
+  @Expose//В данной аннотации указывем то, что id не будет отображаться в файле contacts.json, а будет отображаться данная строчка.
   private String workPhoneNumber;
+  @Expose//В данной аннотации указывем то, что id не будет отображаться в файле contacts.json, а будет отображаться данная строчка.
   private String mobilePhoneNumber;
+  @Expose//В данной аннотации указывем то, что id не будет отображаться в файле contacts.json, а будет отображаться данная строчка.
   private String allEmail;
+  @Expose//В данной аннотации указывем то, что id не будет отображаться в файле contacts.json, а будет отображаться данная строчка.
   private String email;
+  @Expose//В данной аннотации указывем то, что id не будет отображаться в файле contacts.json, а будет отображаться данная строчка.
   private String email2;
+  @Expose//В данной аннотации указывем то, что id не будет отображаться в файле contacts.json, а будет отображаться данная строчка.
   private String email3;
+  @Expose//В данной аннотации указывем то, что id не будет отображаться в файле contacts.json, а будет отображаться данная строчка.
   private String address2;
+  @Expose//В данной аннотации указывем то, что id не будет отображаться в файле contacts.json, а будет отображаться данная строчка.
   private String group;
 
   public File getPhoto() {
@@ -180,7 +201,21 @@ public class ContactData {
     return "ContactData{" +
             "id=" + id +
             ", firstname='" + firstname + '\'' +
+            ", middlename='" + middlename + '\'' +
             ", lastname='" + lastname + '\'' +
+            ", companyName='" + companyName + '\'' +
+            ", address1='" + address1 + '\'' +
+            ", allPhones='" + allPhones + '\'' +
+            ", homePhoneNumber='" + homePhoneNumber + '\'' +
+            ", workPhoneNumber='" + workPhoneNumber + '\'' +
+            ", mobilePhoneNumber='" + mobilePhoneNumber + '\'' +
+            ", allEmail='" + allEmail + '\'' +
+            ", email='" + email + '\'' +
+            ", email2='" + email2 + '\'' +
+            ", email3='" + email3 + '\'' +
+            ", address2='" + address2 + '\'' +
+            ", group='" + group + '\'' +
+            ", photo=" + photo +
             '}';
   }
 
