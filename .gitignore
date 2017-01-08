@@ -16,3 +16,4 @@ gradle-app.setting
 .idea/misc.xml
 testProject/src/main/java/ru/stqa/pft/testProject/Primes.java
 testProject/src/test/java/ru/stqa/pft/testProject/PrimeTests.java
+*.log

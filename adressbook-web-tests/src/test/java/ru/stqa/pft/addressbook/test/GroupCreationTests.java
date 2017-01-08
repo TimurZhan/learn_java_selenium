@@ -3,19 +3,19 @@ package ru.stqa.pft.addressbook.test;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.thoughtworks.xstream.XStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.GroupData;
 import ru.stqa.pft.addressbook.model.Groups;
 
-//Статический импорт
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
+//Статический импорт
 import static org.hamcrest.CoreMatchers.equalTo;//Импорт отдельного метода (equalTo) из класса CoreMatchers билбиотеки hamcrest.
 import static org.hamcrest.MatcherAssert.assertThat;//Импорт отдельного метода (assertThat) из класса MatcherAssert билбиотеки hamcrest.
 
