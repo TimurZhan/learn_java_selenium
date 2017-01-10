@@ -3,16 +3,34 @@ package ru.stqa.pft.addressbook.model;
 import com.google.gson.annotations.Expose;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
+import org.hibernate.annotations.Type;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @XStreamAlias("group") //Тут указывает то, как будет называться каждый объект в файле groups.xml
+@Entity //Эта аннотация объявляет класс GroupData привязанным к БД
+@Table(name = "group_list") //Тут подсказываем программе, что класс GroupData равен таблице под названием group_list, в БД
 public class GroupData {
   @XStreamOmitField //В данной аннотации указывем то, что id не будет отображаться в файле groups.xml
+  @Id
+  @Column (name = "group_id")
   private int id = Integer.MAX_VALUE;
+
   @Expose //В данной аннотации указывем то, что id не будет отображаться в файле groups.json, а будет отображаться данная строчка.
+  @Column (name = "group_name")
   private String name;
+
   @Expose //В данной аннотации указывем то, что id не будет отображаться в файле groups.json, а будет отображаться данная строчка.
+  @Column (name = "group_header")
+  @Type(type = "text")
   private String header;
+
   @Expose //В данной аннотации указывем то, что id не будет отображаться в файле groups.json, а будет отображаться данная строчка.
+  @Column (name = "group_footer")
+  @Type(type = "text")
   private String footer;
 
   public GroupData withId(int id) {

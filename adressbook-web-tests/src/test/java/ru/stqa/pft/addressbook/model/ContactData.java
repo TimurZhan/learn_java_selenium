@@ -3,48 +3,96 @@ package ru.stqa.pft.addressbook.model;
 import com.google.gson.annotations.Expose;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
+import org.hibernate.annotations.Type;
 
+import javax.persistence.*;
 import java.io.File;
 
 @XStreamAlias("contact") //Тут указывает то, как будет называться каждый объект в файле contacts.xml
+@Entity //Эта аннотация объявляет класс ContactData привязанным к БД
+@Table(name = "addressbook") //Тут подсказываем программе, что класс GroupData равен таблице под названием , в БД
 public class ContactData {
+
   @XStreamOmitField //В данной аннотации указывем то, что id не будет отображаться в файле contacts.xml
+  @Id
+  @Column(name = "id")
   private int id = Integer.MAX_VALUE;
+
   @Expose//В данной аннотации указывем то, что id не будет отображаться в файле contacts.json, а будет отображаться данная строчка.
+  @Column(name = "firstname")
   private String firstname;
+
   @Expose//В данной аннотации указывем то, что id не будет отображаться в файле contacts.json, а будет отображаться данная строчка.
+  @Column(name = "middlename")
   private String middlename;
+
   @Expose//В данной аннотации указывем то, что id не будет отображаться в файле contacts.json, а будет отображаться данная строчка.
+  @Column(name = "lastname")
   private String lastname;
+
   @Expose//В данной аннотации указывем то, что id не будет отображаться в файле contacts.json, а будет отображаться данная строчка.
+  @Column(name = "company")
   private String companyName;
+
   @Expose//В данной аннотации указывем то, что id не будет отображаться в файле contacts.json, а будет отображаться данная строчка.
+  @Column(name = "address")
+  @Type(type = "text")
   private String address1;
+
   @Expose//В данной аннотации указывем то, что id не будет отображаться в файле contacts.json, а будет отображаться данная строчка.
+  @Transient //Пропускает столбец при отработке запроса к БД
   private String allPhones;
+
   @Expose//В данной аннотации указывем то, что id не будет отображаться в файле contacts.json, а будет отображаться данная строчка.
+  @Column(name = "home")
+  @Type(type = "text")
   private String homePhoneNumber;
+
   @Expose//В данной аннотации указывем то, что id не будет отображаться в файле contacts.json, а будет отображаться данная строчка.
+  @Column(name = "work")
+  @Type(type = "text")
   private String workPhoneNumber;
+
   @Expose//В данной аннотации указывем то, что id не будет отображаться в файле contacts.json, а будет отображаться данная строчка.
+  @Column(name = "mobile")
+  @Type(type = "text")
   private String mobilePhoneNumber;
+
   @Expose//В данной аннотации указывем то, что id не будет отображаться в файле contacts.json, а будет отображаться данная строчка.
+  @Transient //Пропускает столбец при отработке запроса к БД
   private String allEmail;
+
   @Expose//В данной аннотации указывем то, что id не будет отображаться в файле contacts.json, а будет отображаться данная строчка.
+  @Column(name = "email")
+  @Type(type = "text")
   private String email;
+
   @Expose//В данной аннотации указывем то, что id не будет отображаться в файле contacts.json, а будет отображаться данная строчка.
+  @Column(name = "email2")
+  @Type(type = "text")
   private String email2;
+
   @Expose//В данной аннотации указывем то, что id не будет отображаться в файле contacts.json, а будет отображаться данная строчка.
+  @Column(name = "email3")
+  @Type(type = "text")
   private String email3;
+
   @Expose//В данной аннотации указывем то, что id не будет отображаться в файле contacts.json, а будет отображаться данная строчка.
+  @Column(name = "address2")
+  @Type(type = "text")
   private String address2;
+
   @Expose//В данной аннотации указывем то, что id не будет отображаться в файле contacts.json, а будет отображаться данная строчка.
+  @Transient //Пропускает столбец при отработке запроса к БД
   private String group;
+
   @Expose//В данной аннотации указывем то, что id не будет отображаться в файле contacts.json, а будет отображаться данная строчка.
-  private File photo;
+  @Column(name = "photo")
+  @Type(type = "text")
+  private String photo;
 
   public ContactData withPhoto(File photo) {
-    this.photo = photo;
+    this.photo = photo.getPath();
     return this;
   }
 
@@ -129,7 +177,7 @@ public class ContactData {
   }
 
   public File getPhoto() {
-    return photo;
+    return new File(photo);
   }
 
 
