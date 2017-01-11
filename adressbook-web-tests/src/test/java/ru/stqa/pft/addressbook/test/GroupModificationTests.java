@@ -28,6 +28,7 @@ public class GroupModificationTests extends TestBase {
     assertThat(app.group().count(), equalTo(before.size()));//Тут реализована проверка количества элементов (размер списка групп), до и после. Необходимо, чтобы значения совпадали.
     Groups after = app.db().groups();//Тут происходит подсчет количества групп (элементов в списке) ПОСЛЕ создания группы.
     assertThat(after, equalTo(before.without(modifiedGroup).withAdded(group))); //Сравниваем коллекцию объектов типа GroupData как множество, ДО и ПОСЛЕ модификации группы.
+    verifyGroupListInUI(); //Сравнивает между собой списки групп выкачанные из БД и те, которые отображаются на странице веб-приложения. Ее можно отключать и включать.
     //app.getSessionHelper().logoutProgram();
   }
 }

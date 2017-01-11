@@ -1,17 +1,14 @@
 package ru.stqa.pft.addressbook.test;
 
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
 
 import java.io.File;
-import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.testng.Assert.assertEquals;
 
 public class ContactModificationTests extends TestBase {
 
@@ -54,5 +51,6 @@ public class ContactModificationTests extends TestBase {
     assertThat(app.contact().count(), equalTo(before.size()));
     Contacts after = app.db().contacts();
     assertThat(after, equalTo(before.without(modifidedContact).withAdded(contact)));//Тут реализовано сравнение списков after и before между собой
+    verifyContactListInUI();//Сравнивает между собой списки контактов выкачанных из БД и те, которые отображаются на странице веб-приложения. Ее можно отключать и включать.
   }
 }

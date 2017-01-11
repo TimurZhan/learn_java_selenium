@@ -8,10 +8,17 @@ import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 import ru.stqa.pft.addressbook.appmanager.ApplicationManager;
+import ru.stqa.pft.addressbook.model.ContactData;
+import ru.stqa.pft.addressbook.model.Contacts;
+import ru.stqa.pft.addressbook.model.GroupData;
+import ru.stqa.pft.addressbook.model.Groups;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.stream.Collectors;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class TestBase {
 
@@ -39,6 +46,33 @@ public class TestBase {
   @AfterMethod(alwaysRun = true)
   public void logTestStop(Method m){
     logger.info("Stop test " + m.getName());
+  }
+
+
+  public void verifyGroupListInUI(){
+    if (Boolean.getBoolean("verifyUI")) { //Эта строчка настраивает возможность отключения данной проверки, если она не нужна.
+      Groups dbGroups = app.db().groups(); //Берем списко групп из БД
+      Groups uiGroups = app.group().all(); //Берем списко групп со страницы веб-приложения.
+
+      /** Сравниваем списки. Причем у dbGroups, для сравнения берем только ID и Имя группы. Хедер и Футер мешают сравнению,
+       * так как у uiGroups есть только ID и Имя группы.*/
+      assertThat(uiGroups, equalTo(dbGroups.stream().map((g) -> new GroupData().withId(g.getId()).withName(g.getName()))
+              .collect(Collectors.toSet())));
+    }
+  }
+
+  public void verifyContactListInUI(){
+    if (Boolean.getBoolean("verifyUI")) { //Эта строчка настраивает возможность отключения данной проверки, если она не нужна.
+      Contacts dbContacts = app.db().contacts(); //Берем списко групп из БД
+      Contacts uiContacts = app.contact().all(); //Берем списко групп со страницы веб-приложения.
+
+      /** Сравниваем списки. Причем у dbContacts, для сравнения берем только ID и Имя группы. Хедер и Футер мешают сравнению,
+       * так как у uiContacts есть только ID и Имя группы.*/
+      assertThat(uiContacts, equalTo(dbContacts.stream().map((c) -> new ContactData()
+              .withId(c.getId())
+              .withFirstname(c.getFirstname())
+              .withLastname(c.getLastname())).collect(Collectors.toSet())));
+    }
   }
 
 }
