@@ -7,6 +7,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.BrowserType;
 
+import javax.enterprise.inject.New;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -24,6 +25,7 @@ public class ApplicationManager {
   private GroupHelper groupHelper;
   private ContactHelper contactHelper;
   private String browser;
+  private DbHelper dbHelper;
 
   public ApplicationManager(String browser) {
     this.browser = browser;
@@ -33,6 +35,7 @@ public class ApplicationManager {
   public void init() throws IOException {
     String target = System.getProperty("target", "local");
     properties.load(new FileReader(new File(String.format("src/test/resources/%s.properties", target))));//Загрузка конфигурационного файла для выполнения тестов
+    dbHelper = new DbHelper(); //Тут устанавливается соединение с БД.
     if (browser.equals(BrowserType.FIREFOX)){
       wd = new FirefoxDriver();
     } else if (browser.equals(BrowserType.CHROME)){
@@ -67,6 +70,10 @@ public class ApplicationManager {
 
   public ContactHelper contact() {
     return contactHelper;
+  }
+
+  public DbHelper db(){
+    return dbHelper;
   }
 
 }

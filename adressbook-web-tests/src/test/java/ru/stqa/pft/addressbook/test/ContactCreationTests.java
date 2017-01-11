@@ -57,12 +57,12 @@ public class ContactCreationTests extends TestBase {
   @Test(dataProvider = "validContactsFromXml") //Привязываем тестовый провайдер к тесту.
   public void contactCreationTests(ContactData contact) {
     app.goTo().homePage();
-    Contacts before = app.contact().all();//Тут происходит подсчет количества контактов(элементов в списке) ДО создания контакта.
+    Contacts before = app.db().contacts();//Тут происходит подсчет количества контактов(элементов в списке) ДО создания контакта.
     app.contact().create(contact, true);
     app.goTo().homePage();
     //Тут реализована проверка количества элементов (размер списка контактов), до и после. Необходимо, чтобы значения совпадали.
     assertThat(app.contact().count(), equalTo(before.size() + 1));
-    Contacts after = app.contact().all();//Тут происходит подсчет количества контактов (элементов в списке) ПОСЛЕ создания контакта.
+    Contacts after = app.db().contacts();//Тут происходит подсчет количества контактов (элементов в списке) ПОСЛЕ создания контакта.
     assertThat(after, equalTo(
             before.withAdded(contact.withId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt()))));//Cравниваем списки, после их упорядочивания.
   }
@@ -70,7 +70,7 @@ public class ContactCreationTests extends TestBase {
   @Test (enabled = false)
   public void testBadContactCreationTests() {
     app.goTo().homePage();
-    Contacts before = app.contact().all();//Тут происходит подсчет количества контактов(элементов в списке) ДО создания контакта.
+    Contacts before = app.db().contacts();//Тут происходит подсчет количества контактов(элементов в списке) ДО создания контакта.
     ContactData contact = new ContactData()
             .withFirstname("sdfTe'st")
             .withLastname("Test3")
@@ -82,7 +82,7 @@ public class ContactCreationTests extends TestBase {
     app.goTo().homePage();
     //Тут реализована проверка количества элементов (размер списка контактов), до и после. Необходимо, чтобы значения совпадали.
     assertThat(app.contact().count(), equalTo(before.size()));
-    Contacts after = app.contact().all();//Тут происходит подсчет количества контактов (элементов в списке) ПОСЛЕ создания контакта.
+    Contacts after = app.db().contacts();//Тут происходит подсчет количества контактов (элементов в списке) ПОСЛЕ создания контакта.
     assertThat(after, equalTo(before));//Cравниваем списки, после их упорядочивания.
   }
 

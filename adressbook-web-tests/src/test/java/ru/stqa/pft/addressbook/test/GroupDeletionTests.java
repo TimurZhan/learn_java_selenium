@@ -15,15 +15,14 @@ public class GroupDeletionTests extends TestBase {
   @BeforeMethod//Метод осуществляющий проверку предусловия.
   public void ensurePrecondition(){
     app.goTo().groupPage();
-    if (app.group().all().size() == 0){ //Создана проверка предусловия того, что редактируемая группа существует.
+    if (app.db().groups().size() == 0){ //Создана проверка предусловия того, что редактируемая группа существует. Проверка идет через прямоне обращение к БД
       app.group().create(new GroupData().withName("Test1"));
     }
   }
 
   @Test
   public void testGroupDeletionTest() {
-    Groups before = app.group().all();//Тут происходит подсчет количества групп(элементов в множестве) ДО создания группы.
-
+    Groups before = app.db().groups();//Тут происходит подсчет количества групп(элементов в множестве) ДО создания группы.
     /** Тут создаем экземпляр объекта (Группа), которая будет в дальнейшем удалена.
      * before.iterator() - данный метод последовательно перебирает коллекцию объектов в before, как множество.
      * next() - выбирает какой-либо объект и извлекает данный элемент из множества.
@@ -31,7 +30,7 @@ public class GroupDeletionTests extends TestBase {
     GroupData deletedGroup = before.iterator().next();
     app.group().delete(deletedGroup);
     assertThat(app.group().count(), equalTo(before.size() - 1));//Тут реализована проверка количества элементов (размер списка групп), до и после. Необходимо, чтобы значения совпадали.
-    Groups after = app.group().all();//Тут происходит подсчет количества групп (элементов в множестве) ПОСЛЕ создания группы.
+    Groups after = app.db().groups();//Тут происходит подсчет количества групп (элементов в множестве) ПОСЛЕ создания группы.
     assertThat(after, equalTo(before.without(deletedGroup))); //Проверка того, что группа удалилась.
     //app.getSessionHelper().logoutProgram();
   }
