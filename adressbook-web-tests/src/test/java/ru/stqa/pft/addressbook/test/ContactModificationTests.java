@@ -6,7 +6,6 @@ import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
 
-import java.io.File;
 import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -18,7 +17,7 @@ public class ContactModificationTests extends TestBase {
   @BeforeMethod//Проверка предусловия
   public void ensurePreconditions() {
     app.goTo().homePage();
-    if (app.db().contacts().size() == 0){//Создана проверка предусловия того, что удаляемая группа существует.
+    if (app.contact().all().size() == 0){//Создана проверка предусловия того, что удаляемая группа существует.
       app.contact().create(new ContactData()
               .withFirstname("sdfTest")
               .withMiddlename("Tsdfsdfesу2")
@@ -34,7 +33,7 @@ public class ContactModificationTests extends TestBase {
 
   @Test
   public void testContactModification() {
-    Contacts before = app.db().contacts();
+    Contacts before = app.contact().all();
     ContactData modifidedContact = before.iterator().next();
     ContactData contact = new ContactData()
             .withId(modifidedContact.getId())
@@ -46,13 +45,12 @@ public class ContactModificationTests extends TestBase {
             .withMobilePhoneNumber("8900045001")
             .withEmail("test1test3test2@mail.ru")
             .withAddress2("Test address 2")
-            .withGroup("test 0")
-            .withPhoto(new File("src/test/resources/sc.jpg"));
+            .withGroup("Тест 2222");
     app.contact().modify(contact);
     app.goTo().homePage();
     //Тут реализована проверка количества элементов (размер списка контактов), до и после. Необходимо, чтобы значения совпадали.
     assertThat(app.contact().count(), equalTo(before.size()));
-    Contacts after = app.db().contacts();
+    Contacts after = app.contact().all();
     assertThat(after, equalTo(before.without(modifidedContact).withAdded(contact)));//Тут реализовано сравнение списков after и before между собой
   }
 }

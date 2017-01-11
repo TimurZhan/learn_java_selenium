@@ -87,7 +87,6 @@ public class ContactData {
   private String group;
 
   @Expose//В данной аннотации указывем то, что id не будет отображаться в файле contacts.json, а будет отображаться данная строчка.
-  @Transient //Пропускает столбец при отработке запроса к БД
   @Column(name = "photo")
   @Type(type = "text")
   private String photo;
