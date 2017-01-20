@@ -36,6 +36,7 @@ public class ContactDataGenerator {
   public static void main(String[] args) throws IOException {
     ContactDataGenerator generator = new ContactDataGenerator();//Создан объект текущего класса
 
+
     //Создан объект JCommander. Он нужен для правильного вывода сообщения на консоль. У которого параметр generator должен быть заполнен атрибутами count и file.
     //Парметр args заполняется теми опциями, которые переданы в коммандонй строке.
     JCommander jCommander = new JCommander(generator);
@@ -82,7 +83,6 @@ public class ContactDataGenerator {
   private List<ContactData> generateContacts(int count) {
     List<ContactData> contacts2 = new ArrayList<ContactData>();
     for (int i = 0; i < count; i++){
-      //File photo = new File("src/test/resources/rt.jpg");
       contacts2.add(
               new ContactData()
                       .withFirstname(String.format("Firstname %s", i))

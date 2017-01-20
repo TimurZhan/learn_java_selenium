@@ -7,6 +7,8 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
+import ru.stqa.pft.addressbook.model.GroupData;
+import ru.stqa.pft.addressbook.model.Groups;
 
 import java.io.File;
 import java.io.*;
@@ -56,6 +58,7 @@ public class ContactCreationTests extends TestBase {
 
   @Test(dataProvider = "validContactsFromXml") //Привязываем тестовый провайдер к тесту.
   public void contactCreationTests(ContactData contact) {
+    //Groups groups = app.db().groups();  Этот параметр вытаскивает список групп из БД (Надо это как-то реализовать): contact.inGroup(groups.iterator().next())
     app.goTo().homePage();
     Contacts before = app.db().contacts();//Тут происходит подсчет количества контактов(элементов в списке) ДО создания контакта.
     app.contact().create(contact, true);
@@ -76,8 +79,7 @@ public class ContactCreationTests extends TestBase {
             .withLastname("Test3")
             .withAddress1("Test address")
             .withMobilePhoneNumber("8900045001")
-            .withEmail("test1test3test2@mail.ru")
-            .withGroup("Тест 2222");
+            .withEmail("test1test3test2@mail.ru");
     app.contact().create(contact, true);
     app.goTo().homePage();
     //Тут реализована проверка количества элементов (размер списка контактов), до и после. Необходимо, чтобы значения совпадали.

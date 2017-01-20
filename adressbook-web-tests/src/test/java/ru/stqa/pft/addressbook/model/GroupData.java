@@ -5,10 +5,9 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @XStreamAlias("group") //Тут указывает то, как будет называться каждый объект в файле groups.xml
 @Entity //Эта аннотация объявляет класс GroupData привязанным к БД
@@ -33,6 +32,11 @@ public class GroupData {
   @Type(type = "text")
   private String footer;
 
+  //Тут укакзывается связующая таблица в БД. В которой связываются между собой два объекта из Групп и Контактов
+  @ManyToMany(mappedBy = "groups")
+  private Set<ContactData> contacts = new HashSet<ContactData>();
+
+
   public GroupData withId(int id) {
     this.id = id;
     return this;
@@ -53,6 +57,7 @@ public class GroupData {
     return this;
   }
 
+
   public int getId() {
     return id;
   }
@@ -67,6 +72,10 @@ public class GroupData {
 
   public String getFooter() {
     return footer;
+  }
+
+  public Contacts getContacts() { //Тут будет возвращаться копия объекта типа GroupData
+    return new Contacts(contacts);
   }
 
   @Override

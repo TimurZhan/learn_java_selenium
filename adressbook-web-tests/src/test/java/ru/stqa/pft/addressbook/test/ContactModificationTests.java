@@ -24,8 +24,7 @@ public class ContactModificationTests extends TestBase {
               .withAddress1("Test address")
               .withMobilePhoneNumber("8900045001")
               .withEmail("test1test3test2@mail.ru")
-              .withAddress2("Test address 2")
-              .withGroup("Тест 2222"), true);
+              .withAddress2("Test address 2"), true);
     }
   }
 
@@ -43,7 +42,6 @@ public class ContactModificationTests extends TestBase {
             .withMobilePhoneNumber("8900045001")
             .withEmail("test1test3test2@mail.ru")
             .withAddress2("Test address 2")
-            .withGroup("test 0")
             .withPhoto(new File("src/test/resources/sc.jpg"));
     app.contact().modify(contact);
     app.goTo().homePage();

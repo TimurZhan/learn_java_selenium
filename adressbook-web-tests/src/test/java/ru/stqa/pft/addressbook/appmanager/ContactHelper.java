@@ -32,13 +32,14 @@ public class ContactHelper extends HelperBase {
     type(By.name("email3"), contactData.getEmail3());
     type(By.name("address2"), contactData.getAddress2());
     attach(By.name("photo"), contactData.getPhoto());//Метод getAbsolutePath преобразует данные в строку. При этом он содержит абослютный путь к файлу.
-    if (creation) { //Если это форма создания контакта, то элемент выбора групп должен быть
-      if (contactData.getGroup() != null) {
-        new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup()); //
-      }
-    } else {//Если это форма модификации контакта, то элемент выбора групп тут НЕ должен быть
-      Assert.assertFalse(isElementPresent(By.name("new_group")));
-    }
+    //if (creation) { //Если это форма создания контакта, то элемент выбора групп должен быть
+      //if (contactData.getGroups().size() > 0) {
+        //Assert.assertTrue(contactData.getGroups().size() == 1);
+       // new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroups().iterator().next().getName()); //
+      //}
+   // } else {//Если это форма модификации контакта, то элемент выбора групп тут НЕ должен быть
+     // Assert.assertFalse(isElementPresent(By.name("new_group")));
+    //}
   }
 
   public ContactData InfoFromEditFrom(ContactData contact) {

@@ -4,6 +4,9 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
+import ru.stqa.pft.addressbook.model.GroupData;
+
+import java.io.File;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -23,7 +26,8 @@ public class ContactDelitionTests extends TestBase {
               .withMobilePhoneNumber("8900045001")
               .withEmail("test1test3test2@mail.ru")
               .withAddress2("Test address 2")
-              .withGroup("Тест 2222"), true);
+              .withPhoto(new File("src/test/resources/sc.jpg")), true);
+
     }
   }
 

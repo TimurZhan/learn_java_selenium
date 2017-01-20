@@ -23,7 +23,6 @@ public class ContactEmailAndAddressTests extends TestBase {
               .withFirstname("sdfTest")
               .withLastname("Test3")
               .withAddress1("dfdfsdfdfstree.er 32/1")
-              .withGroup("Тест 2222")
               .withEmail("eeeeeee@mail.ru")
               .withEmail2("ddd45dddd@mail.ru")
               .withEmail3("hhhhhhh@mail.ru"), true);

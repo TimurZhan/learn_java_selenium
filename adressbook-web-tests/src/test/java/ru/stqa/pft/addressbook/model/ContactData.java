@@ -7,6 +7,8 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 
 @XStreamAlias("contact") //Тут указывает то, как будет называться каждый объект в файле contacts.xml
 @Entity //Эта аннотация объявляет класс ContactData привязанным к БД
@@ -84,13 +86,15 @@ public class ContactData {
 
   @Expose//В данной аннотации указывем то, что id не будет отображаться в файле contacts.json, а будет отображаться данная строчка.
   @Transient //Пропускает столбец при отработке запроса к БД
-  private String group;
-
-  @Expose//В данной аннотации указывем то, что id не будет отображаться в файле contacts.json, а будет отображаться данная строчка.
-  @Transient //Пропускает столбец при отработке запроса к БД
   @Column(name = "photo")
   @Type(type = "text")
   private String photo;
+
+  //Тут укакзывается связующая таблица в БД. В которой связываются между собой два объекта из Групп и Контактов
+  @ManyToMany(fetch = FetchType.EAGER)
+  @JoinTable(name = "address_in_groups",joinColumns = @JoinColumn(name = "id"),inverseJoinColumns = @JoinColumn(name = "group_id"))
+  private Set<GroupData> groups = new HashSet<GroupData>();
+
 
   public ContactData withPhoto(File photo) {
     this.photo = photo.getPath();
@@ -172,15 +176,14 @@ public class ContactData {
     return this;
   }
 
-  public ContactData withGroup(String group) {
-    this.group = group;
+  public ContactData inGroup(GroupData group) {
+    groups.add(group);
     return this;
   }
 
   public File getPhoto() {
     return new File(photo);
   }
-
 
   public int getId() {
     return id;
@@ -242,9 +245,10 @@ public class ContactData {
     return address2;
   }
 
-  public String getGroup() {
-    return group;
+  public Groups getGroups() { //Тут будет возвращаться копия множества превращенное в объект типа groups
+    return new Groups(groups);
   }
+
 
   @Override
   public String toString() {
@@ -264,8 +268,8 @@ public class ContactData {
             ", email2='" + email2 + '\'' +
             ", email3='" + email3 + '\'' +
             ", address2='" + address2 + '\'' +
-            ", group='" + group + '\'' +
-            ", photo=" + photo +
+            ", photo='" + photo + '\'' +
+            ", groups=" + groups +
             '}';
   }
 
