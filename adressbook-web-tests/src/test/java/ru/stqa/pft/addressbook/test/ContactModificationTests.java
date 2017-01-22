@@ -15,7 +15,7 @@ public class ContactModificationTests extends TestBase {
   @BeforeMethod//Проверка предусловия
   public void ensurePreconditions() {
     app.goTo().homePage();
-    if (app.db().contacts().size() == 0){//Создана проверка предусловия того, что удаляемая группа существует.
+    if (app.db().contacts().size() == 0){//Создана проверка предусловия того, что модифицируемая группа существует.
       app.contact().create(new ContactData()
               .withFirstname("sdfTest")
               .withMiddlename("Tsdfsdfesу2")

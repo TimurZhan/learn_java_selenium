@@ -12,6 +12,7 @@ import java.util.List;
 
 public class ContactHelper extends HelperBase {
 
+
   public ContactHelper(WebDriver wd) {
     super(wd);
   }
@@ -94,6 +95,43 @@ public class ContactHelper extends HelperBase {
     contactCashe = null;
   }
 
+  public void selectContact(ContactData selectedContact) {
+    selectAddContactToGroupById(selectedContact.getId());
+    selectGroupToAdd();
+    addContactToGroup();
+    contactCashe = null;
+  }
+
+  public void deleteContactFromGroup(ContactData selectedContact) {
+    selectAddContactToGroupById(selectedContact.getId());
+    deleteAddedContactFromGroup();
+    contactCashe = null;
+  }
+
+  private void deleteAddedContactFromGroup() {
+    click(By.xpath("//input[@type='submit']"));
+  }
+
+
+  public void selecttingContactAdded1(){
+    click(By.xpath("//form[@id='right']/select/option[3]"));
+  }
+
+  public void selecttingContactAdded2(){
+    click(By.xpath("//form[@id='right']/select/option[4]"));
+  }
+
+  public void selectGroupToAdd(){
+    click(By.xpath("//div[@class='right']/select/option[1]"));
+  }
+
+  public void selectAddContactToGroupById(int id) {
+    wd.findElement(By.cssSelector("input[value='" + id + "']")).click();
+  }
+
+  public void addContactToGroup() {
+    click(By.name("add"));
+  }
 
   public void initContactModificationById(int id) {
     wd.findElement(By.xpath(String.format("//a[@href='edit.php?id=%s']", id))).click();
