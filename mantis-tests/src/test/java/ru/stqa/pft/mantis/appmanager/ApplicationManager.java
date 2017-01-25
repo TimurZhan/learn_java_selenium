@@ -19,6 +19,7 @@ public class ApplicationManager {
 
   private String browser;
   private RegistrationHelper registrationHelper;
+  private FtpHelper ftp;
 
   public ApplicationManager(String browser) {
     this.browser = browser;
@@ -51,9 +52,17 @@ public class ApplicationManager {
     return registrationHelper;
   }
 
+  //Возвращает обхект типа FtpHelper
+  public FtpHelper ftp(){
+    if (ftp == null) {
+      ftp = new FtpHelper(this);
+    }
+    return ftp;
+  }
+
   //Реализована ленивая инициализация. Браузер будет запускаться только тогда, когда вызван данный метод.
   public WebDriver getDriver() {
-    if (wd ==null){
+    if (wd == null){
       if (browser.equals(BrowserType.FIREFOX)){
         wd = new FirefoxDriver();
       } else if (browser.equals(BrowserType.CHROME)){
