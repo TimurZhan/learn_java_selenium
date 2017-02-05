@@ -20,6 +20,7 @@ public class ApplicationManager {
   private RegistrationHelper registrationHelper;
   private FtpHelper ftp;
   private MailHelper mailHelper;
+  private JamesHelper jamesHelper;
 
   public ApplicationManager(String browser) {
     this.browser = browser;
@@ -76,10 +77,19 @@ public class ApplicationManager {
     return wd;
   }
 
+  //Тут иницииализируется класс MailHelper
   public MailHelper mail(){
     if (mailHelper == null){
       mailHelper = new MailHelper(this);
     }
     return mailHelper;
+  }
+
+  //Тут иницииализируется класс JamesHelper
+  public JamesHelper james(){
+    if (jamesHelper == null){
+      jamesHelper = new JamesHelper(this);
+    }
+    return jamesHelper;
   }
 }
