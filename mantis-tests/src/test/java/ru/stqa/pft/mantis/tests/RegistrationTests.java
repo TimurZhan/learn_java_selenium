@@ -14,7 +14,7 @@ import static org.testng.Assert.assertTrue;
 
 public class RegistrationTests extends TestBase {
 
-  //@BeforeMethod
+  @BeforeMethod
   public void startMailServer(){
     app.mail().start();
   }
@@ -25,10 +25,10 @@ public class RegistrationTests extends TestBase {
     String user = String.format("user%s", now); //Тут "now" подставляется вместо %s.
     String password = "password";
     String email = String.format("user%s@localhost.localdomain", now); //Тут "now" подставляется вместо %s.
-    app.james().createUser(user, password); //Тут создаем юзера на почт сервере james
+    //app.james().createUser(user, password); //Тут создаем юзера на почт сервере james
     app.registration().start(user, email);
-    //List<MailMessage> mailMessages = app.mail().waitForMail(2, 10000);//Тут ждем 2 письма в течени 10000млс (10 сек). Получаем письмо из внутр почт сервера.
-    List<MailMessage> mailMessages = app.james().waitForMail(user, password, 60000); ;//Тут ждем письмо в течени 60000 (60 сек). Получаем письмо из внешнего почт сервера.
+    List<MailMessage> mailMessages = app.mail().waitForMail(2, 10000);//Тут ждем 2 письма в течени 10000млс (10 сек). Получаем письмо из внутр почт сервера.
+    //List<MailMessage> mailMessages = app.james().waitForMail(user, password, 60000); ;//Тут ждем письмо в течени 60000 (60 сек). Получаем письмо из внешнего почт сервера.
     String s = findConfirmationLink(mailMessages, email);//Тут находим письмо с указанным адресом (в переменной email) и извлекаем из него ссылку
     app.registration().finish(s, password);
     assertTrue(app.newSession().login(user, password)); //Тут производим проверку на то, что вход осуществлен корректно.
@@ -48,7 +48,7 @@ public class RegistrationTests extends TestBase {
     return regex.getText(mailMessage.text);
   }
 
-  //@AfterMethod(alwaysRun = true) //Выражение alwaysRun = true означает то, что сервер остановится в любом случае. Даже если тест упадет
+  @AfterMethod(alwaysRun = true) //Выражение alwaysRun = true означает то, что сервер остановится в любом случае. Даже если тест упадет
   public void stopMailServer(){
     app.mail().stop();
   }
