@@ -82,7 +82,7 @@ public class GroupCreationTests extends TestBase { //Создан базовый
     //Тут каждый шаг теста выделен в отдельный вспомогательный метод
     app.goTo().groupPage();
     Groups before = app.db().groups();//Тут происходит подсчет количества групп(элементов в множестве) ДО создания группы.
-    GroupData group = new GroupData().withName("Тест 222'2");
+    GroupData group = new GroupData().withName("Test 222'2");
     app.group().create(group);
     assertThat(app.group().count(), equalTo(before.size()));//Тут реализована проверка количества элементов (размер списка групп), до и после. Необходимо, чтобы значения совпадали.
     Groups after = app.db().groups();//Тут происходит подсчет количества групп (элементов в множестве) ПОСЛЕ создания группы.

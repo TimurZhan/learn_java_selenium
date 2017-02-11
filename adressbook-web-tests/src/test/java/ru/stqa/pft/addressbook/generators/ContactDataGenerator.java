@@ -56,7 +56,7 @@ public class ContactDataGenerator {
     } else if (format.equals("xml")){
       saveAsXml(contacts, new File(file)); //Сохранение тесовых данных в файл в формате xml
     } else {
-      System.out.println("Неизвестный формат " + format);
+      System.out.println("Ne ponyatnyi format " + format);
     }
   }
 

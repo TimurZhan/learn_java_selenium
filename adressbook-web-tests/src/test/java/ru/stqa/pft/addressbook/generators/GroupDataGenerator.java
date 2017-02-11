@@ -57,7 +57,7 @@ public class GroupDataGenerator {
     } else if (format.equals("json")){
       saveAsJson(groups, new File(file)); //Сохранение тесовых данных в файл в формате xml
     } else {
-      System.out.println("Не известный формат " + format);
+      System.out.println("Ne ponyatnyi format " + format);
     }
   }
 
