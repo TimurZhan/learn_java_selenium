@@ -18,7 +18,7 @@ dependencies {
 }
 
 test{
-    useTestNG
+    useTestNG()
 }
 
 task testGroups(type: Test){
