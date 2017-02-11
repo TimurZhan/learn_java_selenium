@@ -10,6 +10,6 @@ dependencies {
     compile 'org.testng:testng:6.9.13.6'
 }
 
-test {
-	useTestNG()
+test{
+    useTestNG()
 }
