@@ -1,6 +1,5 @@
 package ru.stqa.pft.addressbook.appmanager;
 
-import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -51,17 +50,17 @@ public class ApplicationManager {
       DesiredCapabilities capabilities = new DesiredCapabilities();
       capabilities.setBrowserName(browser); //Тут устанавливаем браузер ,который должен запуститься.
       wd = new RemoteWebDriver(new URL(properties.getProperty("selenium.server")), capabilities);
-      sessionHelper.login(properties.getProperty("web.adminLogin"), properties.getProperty("web.adminPassword"));
     }
-    wd.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
+    wd.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     wd.get(properties.getProperty("web.baseUrl"));
     contactHelper = new ContactHelper(wd);
     groupHelper = new GroupHelper(wd);
     navigationHelper = new NavigationHelper(wd);
     sessionHelper = new SessionHelper(wd);
-    //sessionHelper.login(properties.getProperty("web.adminLogin"), properties.getProperty("web.adminPassword")); //Параметризовали данный метод, таким образом он стал универсальным. Можно входить под любым юзером
+    sessionHelper.login(properties.getProperty("web.adminLogin"), properties.getProperty("web.adminPassword")); //Параметризовали данный метод, таким образом он стал универсальным. Можно входить под любым юзером
   }
 
+  
   public void stop() {
     wd.quit();
   }
