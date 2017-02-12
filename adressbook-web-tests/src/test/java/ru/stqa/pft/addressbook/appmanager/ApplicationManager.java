@@ -60,7 +60,7 @@ public class ApplicationManager {
     sessionHelper.login(properties.getProperty("web.adminLogin"), properties.getProperty("web.adminPassword")); //Параметризовали данный метод, таким образом он стал универсальным. Можно входить под любым юзером
   }
 
-  
+
   public void stop() {
     wd.quit();
   }
