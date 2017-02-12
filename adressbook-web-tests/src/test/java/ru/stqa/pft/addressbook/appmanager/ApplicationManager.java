@@ -35,9 +35,9 @@ public class ApplicationManager {
 
   public void init() throws IOException {
     String target = System.getProperty("target", "local");
-    properties.load(new FileReader(new File(String.format("src/test/resources/%s.properties", target))));//Загрузка конфигурационного файла для выполнения тестов
-    dbHelper = new DbHelper(); //Тут устанавливается соединение с БД.
-    //Тут пишем, если свойство getProperty("selenium.server") равно пустой строке, то инициализируем какой-то из браузеров
+    properties.load(new FileReader(new File(String.format("src/test/resources/%s.properties", target))));
+    dbHelper = new DbHelper();
+
     if ("".equals(properties.getProperty("selenium.server"))) {
       if (browser.equals(BrowserType.FIREFOX)) {
         wd = new FirefoxDriver();
@@ -46,9 +46,9 @@ public class ApplicationManager {
       } else if (browser.equals(BrowserType.IE)) {
         wd = new InternetExplorerDriver();
       }
-    } else{ //Иначе (НЕ пустая строка) используем селениум сервер, т.е. другой тип драйвера
+    } else{
       DesiredCapabilities capabilities = new DesiredCapabilities();
-      capabilities.setBrowserName(browser); //Тут устанавливаем браузер ,который должен запуститься.
+      capabilities.setBrowserName(browser);
       wd = new RemoteWebDriver(new URL(properties.getProperty("selenium.server")), capabilities);
     }
     wd.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
@@ -57,8 +57,9 @@ public class ApplicationManager {
     groupHelper = new GroupHelper(wd);
     navigationHelper = new NavigationHelper(wd);
     sessionHelper = new SessionHelper(wd);
-    sessionHelper.login(properties.getProperty("web.adminLogin"), properties.getProperty("web.adminPassword")); //Параметризовали данный метод, таким образом он стал универсальным. Можно входить под любым юзером
+    sessionHelper.login(properties.getProperty("web.adminLogin"), properties.getProperty("web.adminPassword"));
   }
+  
 
   public void stop() {
     wd.quit();
