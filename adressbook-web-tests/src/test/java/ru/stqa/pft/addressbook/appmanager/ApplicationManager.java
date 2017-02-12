@@ -1,5 +1,6 @@
 package ru.stqa.pft.addressbook.appmanager;
 
+import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -49,6 +50,7 @@ public class ApplicationManager {
     } else{ //Иначе (НЕ пустая строка) используем селениум сервер, т.е. другой тип драйвера
       DesiredCapabilities capabilities = new DesiredCapabilities();
       capabilities.setBrowserName(browser); //Тут устанавливаем браузер ,который должен запуститься.
+      capabilities.setPlatform(Platform.fromString(System.getProperty("platform", "win10"))); //Выбираем рперационную систему для запуска
       wd = new RemoteWebDriver(new URL(properties.getProperty("selenium.server")), capabilities);
     }
     wd.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
