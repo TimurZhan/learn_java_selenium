@@ -56,7 +56,7 @@ public class GroupCreationTests extends TestBase { //Создан базовый
     }
   }
 
-  @Test(dataProvider = "validGroupsFromJson", enabled = false)  //Привязываем тестовый провайдер к тесту.
+  @Test(dataProvider = "validGroupsFromJson")  //Привязываем тестовый провайдер к тесту.
   public void testGroupCreation(GroupData group) { //В скобках, в качестве параметра, передается массив объектов, который берет тестовые данные из провайдера.
     //Тут каждый шаг теста выделен в отдельный вспомогательный метод
     app.goTo().groupPage();
@@ -77,12 +77,12 @@ public class GroupCreationTests extends TestBase { //Создан базовый
     assertThat(after, equalTo(before.withAdded(group.withId(after.stream().mapToInt((g)-> g.getId()).max().getAsInt()))));
   }
 
-  @Test //(enabled = false) //Негативный тест. Проверяет что группа НЕ создалась.
+  @Test (enabled = false) //Негативный тест. Проверяет что группа НЕ создалась.
   public void testBadGroupCreation() {
     //Тут каждый шаг теста выделен в отдельный вспомогательный метод
     app.goTo().groupPage();
     Groups before = app.db().groups();//Тут происходит подсчет количества групп(элементов в множестве) ДО создания группы.
-    GroupData group = new GroupData().withName("Test 2222");
+    GroupData group = new GroupData().withName("Test 222'2");
     app.group().create(group);
     assertThat(app.group().count(), equalTo(before.size()));//Тут реализована проверка количества элементов (размер списка групп), до и после. Необходимо, чтобы значения совпадали.
     Groups after = app.db().groups();//Тут происходит подсчет количества групп (элементов в множестве) ПОСЛЕ создания группы.
@@ -94,5 +94,4 @@ public class GroupCreationTests extends TestBase { //Создан базовый
     assertThat(after, equalTo(before));
     //app.getSessionHelper().logoutProgram();
   }
-
 }
